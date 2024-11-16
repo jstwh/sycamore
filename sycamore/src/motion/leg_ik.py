@@ -1,32 +1,26 @@
 import math
 
-def inverse_kinematics_dh(x, y, z, L1, L2):
-    """Calculate joint angles for a 3-DoF robot leg using DH parameters."""
-    try:
-        # Hip joint angle (θ₁)
-        theta_hip = math.atan2(y, x)
+def ja_from_xy(x: float, y: float, L1: float, L2: float) -> tuple[int, int]:
+    """
+    L1, L2 lengths of the arms in cm
+    x, y coordinates where the arm should go
+    """
+    r = math.sqrt(x**2 + y**2)
 
-        # Denavit-Hartenberg
-        r = math.sqrt(x**2 + y**2)
-        d = math.sqrt(r**2 + z**2) 
+    if L1 + L2 < r:
+        raise ValueError("Out of bounds")
+    
+    theta_2 = math.acos((L1**2+L2**2-r**2)/(2*L1*L2))
+    phi = math.atan2(y, x)
+    beta = math.atan2(L2*math.sin(theta_2), L1+L2*math.cos(theta_2))
+    theta_1 = phi - beta
 
-        # Check if the point is within reach
-        if d > (L1 + L2):
-            raise ValueError("Target point is out of reach")
+    return (math.degrees(theta_1), math.degrees(theta_2))
 
-        # Shoulder joint angle (θ₂)
-        alpha = math.atan2(z, r)
-        beta = math.acos((L1**2 + d**2 - L2**2) / (2 * L1 * d))
-        theta_shoulder = alpha + beta
-
-        # Knee joint angle (θ₃)
-        theta_knee = math.acos((L1**2 + L2**2 - d**2) / (2 * L1 * L2))
-        
-        return theta_hip, theta_shoulder, theta_knee
-
-    except ValueError as e:
-        print(f"Error in IK calculation: {e}")
-        return None
-
-L1 = 10.0
-L2 = 10.0
+if __name__ == "__main__":
+    # all in mm
+    target_x = 40
+    target_y = 60
+    L1 = 100
+    L2 = 100
+    print(ja_from_xy(target_x, target_y, L1, L2))
