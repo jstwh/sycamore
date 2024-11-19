@@ -1,52 +1,71 @@
-import math
 import numpy as np
+import matplotlib.pyplot as plt
+import math
 
-def ja_from_xy(x: float, y: float, l1: float, l2: float) -> tuple[int, int]:
-    """
-    L1, L2 lengths of the arms in mm
-    x, y coordinates where the arm should go
-    """
-    upper = x**2 + y**2 - l1**2 - l2**2
-    lower = 2 * l1 * l2
 
-    try:
-        temp = math.acos(upper/lower)
-    except:
-        print("Out of bounds")
-        return None
-    
-    if x == 0:
-        x += 0.001
-    
-    q2 = math.degrees(temp)
-    
-    # q1 angle
-    a = math.atan(y/x)
-    
-    a1 = (l2 * math.sin(math.radians(q2)))
-    b1 = l1 + (l2 * math.cos(math.radians(q2)))
-    c = math.radians(a1)/math.radians(b1)
+class Leg:
+    def __init__(self, l1: int, l2: int):
+        # l1, l2 lengths of the upper and lower leg respectively
+        self.l1 = l1
+        self.l2 = l2
 
-    b= math.atan(c)
-    q1 = math.degrees(a-b)
-    
-    return (int(q1), int(q2))
+    def ja_from_xy(self, x: float, y: float) -> tuple[int, int]:
+        D = (x**2 + y**2 - self.l1**2 - self.l2**2) / (2 * self.l1 * self.l2)
 
-def xy_from_ja(theta_1: float, theta_2: float, L1: float, L2: float) -> tuple[float, float]:
-    """
-    L1, L2 lengths of the arms in mm
-    theta_1, theta_2 joint angles in degrees
-    """
-    x = L1 * math.cos(np.radians(theta_1)) + L2 * math.cos(np.radians(theta_1) + np.radians(theta_2))
-    y = L1 * math.sin(np.radians(theta_1)) + L2 * math.sin(np.radians(theta_1) + np.radians(theta_2))
-    return (int(x), int(y))
+        try:
+            theta2 = math.acos(D)  # theta2 in radians
+        except ValueError:
+            print("Out of bounds")
+            return None
+
+        # Calculate theta1
+        theta1 = math.atan2(y, x) - math.atan2(
+            self.l2 * math.sin(theta2), self.l1 + self.l2 * math.cos(theta2)
+        )
+
+        return (math.degrees(theta1), math.degrees(theta2))
+
+    def xy_from_ja(self, theta1: float, theta2: float) -> tuple[int, int]:
+        # Convert degrees to radians for trigonometric functions
+        theta1_rad = math.radians(theta1)
+        theta2_rad = math.radians(theta2)
+
+        x1 = self.l1 * math.cos(theta1_rad)
+        y1 = self.l1 * math.sin(theta1_rad)
+
+        x2 = x1 + self.l2 * math.cos(theta1_rad + theta2_rad)
+        y2 = y1 + self.l2 * math.sin(theta1_rad + theta2_rad)
+
+        print(f"Joint 1 (x1, y1): ({int(x1)}, {int(y1)})")
+        print(f"Joint 2 (x2, y2): ({int(x2)}, {int(y2)})")
+        return (int(x2), int(y2))
+
 
 if __name__ == "__main__":
-    target_x = 40
-    target_y = 60
     l1 = 100
     l2 = 100
-    t_1, t_2 = ja_from_xy(0, -150, 100, 100)
-    print(t_1, t_2)
-    calculated_x, calculated_y = xy_from_ja(t_1, t_2, 100, 100)
-    print(calculated_x, calculated_y)
+    leg = Leg(l1, l2)
+
+    x = 1
+    y = 140
+
+    while True:
+        user_input = input("Press w, a, s, d \n")
+        if user_input not in ["w", "a", "s", "d"]:
+            print("Invalid")
+            continue
+
+        if user_input == "w":
+            y += 5
+        elif user_input == "a":
+            x -= 5
+        elif user_input == "s":
+            y -= 5
+        elif user_input == "d":
+            x += 5
+
+        if (result := leg.ja_from_xy(x, y)) is not None:
+            t1, t2 = result
+            leg.xy_from_ja(t1, t2)
+        else:
+            print("Calculation failed due to out of bounds")
