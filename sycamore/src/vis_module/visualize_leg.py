@@ -1,90 +1,88 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import math
+from pynput import keyboard
+from queue import Queue
+from leg_ik import Leg
 
+# Robot leg parameters
+l1 = 100
+l2 = 100
+x = 0
+y = -140
+upper = ([], [])
+lower = ([], [])
+leg = Leg(l1, l2)
 
-class Leg:
-    def __init__(self, l1: int, l2: int):
-        # l1, l2 lengths of the upper and lower leg respectively
-        self.l1 = l1
-        self.l2 = l2
+# Plot setup
+fig = plt.figure()
+axis = plt.axes(xlim=(-l1 - l2, l1 + l2), ylim=(-l1 - l2, l1 + l2))
+plt.xlabel("X")
+plt.ylabel("Y")
+plt.grid()
+plt.gca().set_aspect("equal")
+line1, = axis.plot([], [], lw=2)
+line2, = axis.plot([], [], lw=2)
 
-    def ja_from_xy(self, x: float, y: float) -> tuple[int, int]:
-        D = (x**2 + y**2 - self.l1**2 - self.l2**2) / (2 * self.l1 * self.l2)
+# Communication queue for thread-safe updates
+command_queue = Queue()
 
-        try:
-            theta2 = math.acos(D)  # theta2 in radians
-        except ValueError:
-            print("Out of bounds")
-            return None
+def update_plot():
+    """Update the plot with the current leg position."""
+    global upper, lower, t1, t2
 
-        # Calculate theta1
-        theta1 = math.atan2(y, x) - math.atan2(
-            self.l2 * math.sin(theta2), self.l1 + self.l2 * math.cos(theta2)
-        )
-
-        return (math.degrees(theta1), math.degrees(theta2))
-
-    def xy_from_ja(self, theta1: float, theta2: float) -> tuple[int, int]:
-        # Convert degrees to radians for trigonometric functions
-        theta1_rad = math.radians(theta1)
-        theta2_rad = math.radians(theta2)
-
-        x1 = self.l1 * math.cos(theta1_rad)
-        y1 = self.l1 * math.sin(theta1_rad)
-
-        x2 = x1 + self.l2 * math.cos(theta1_rad + theta2_rad)
-        y2 = y1 + self.l2 * math.sin(theta1_rad + theta2_rad)
-
-        print(f"Joint 1 (x1, y1): ({int(x1)}, {int(y1)})")
-        print(f"Joint 2 (x2, y2): ({int(x2)}, {int(y2)})")
-        return (int(x2), int(y2))
-
-
-def draw_leg(x, y, l1, l2):
-    leg = Leg(l1, l2)
-    theta1, theta2 = leg.ja_from_xy(x, y)
-    print(f"theta1: {theta1}, theta2: {theta2}")
-
-    theta1 = np.radians(theta1)
-    theta2 = np.radians(theta2)
+    t1 = np.radians(t1)
+    t2 = np.radians(t2)
 
     x0, y0 = 0, 0
 
-    # forward kinematics, super easy cus planar
-    x1 = l1 * np.cos(theta1)
-    y1 = l1 * np.sin(theta1)
+    # Forward kinematics
+    x1 = l1 * np.cos(t1)
+    y1 = l1 * np.sin(t1)
 
-    x2 = x1 + l2 * np.cos(theta1 + theta2)
-    y2 = y1 + l2 * np.sin(theta1 + theta2)
+    x2 = x1 + l2 * np.cos(t1 + t2)
+    y2 = y1 + l2 * np.sin(t1 + t2)
 
-    # for my sanity
-    x1 = int(x1)
-    x2 = int(x2)
-    y1 = int(y1)
-    y2 = int(y2)
+    upper = ([x0, x1], [y0, y1])
+    lower = ([x1, x2], [y1, y2])
+    line1.set_data(upper)
+    line2.set_data(lower)
+    fig.canvas.draw()
 
-    print(f"Joint 1 (x1, y1): ({x1}, {y1})")
-    print(f"Joint 2 (x2, y2): ({x2}, {y2})")
+def update_pos():
+    """Calculate joint angles and positions."""
+    global x, y, t1, t2
+    t1, t2 = leg.ja_from_xy(x, y)
+    leg.xy_from_ja(t1, t2)
 
-    plt.figure()
-    plt.plot([x0, x1], [y0, y1])
-    plt.plot([x1, x2], [y1, y2])
+def on_press(key):
+    """Handle keyboard input and enqueue commands."""
+    global x, y
+    try:
+        if key.char == "w":
+            command_queue.put(("move", 0, 5))
+        elif key.char == "a":
+            command_queue.put(("move", -5, 0))
+        elif key.char == "s":
+            command_queue.put(("move", 0, -5))
+        elif key.char == "d":
+            command_queue.put(("move", 5, 0))
+    except AttributeError:
+        pass
 
-    plt.xlim(-l1 - l2, l1 + l2)
-    plt.ylim(-l1 - l2, l1 + l2)
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.grid()
-    plt.gca().set_aspect("equal")
+# Start the keyboard listener
+listener = keyboard.Listener(on_press=on_press)
+listener.start()
 
-    plt.show()
+# Main update loop
+while plt.fignum_exists(fig.number):
+    while not command_queue.empty():
+        command = command_queue.get()
+        if command[0] == "move":
+            dx, dy = command[1], command[2]
+            x += dx
+            y += dy
+            update_pos()
+            update_plot()
+    plt.pause(0.05)
 
-
-if __name__ == "__main__":
-    l1 = 100
-    l2 = 100
-
-    x = 0
-    y = 138
-    draw_leg(x, y, l1, l2)
+listener.stop()

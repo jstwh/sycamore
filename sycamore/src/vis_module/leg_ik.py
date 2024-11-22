@@ -14,6 +14,7 @@ class Leg:
             theta2 = math.acos(D)  # theta2 in radians
         except ValueError:
             print("Out of bounds")
+            return None
 
         # Calculate theta1
         theta1 = math.atan2(y, x) - math.atan2(
