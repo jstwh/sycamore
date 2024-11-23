@@ -1,3 +1,7 @@
+"""
+This entire file is deprecated, walking engine will be made at some point.
+"""
+
 import time
 from adafruit_servokit import ServoKit
 

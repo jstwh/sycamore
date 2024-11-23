@@ -3,6 +3,7 @@ from leg_ik import Leg
 import rerun as rr
 import argparse
 
+
 def main():
     global x, y, leg, args
     args = parse_args()
@@ -20,6 +21,7 @@ def main():
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
 
+
 def update_pos():
     global x, y
     t1, t2 = leg.ja_from_xy(x, y)
@@ -34,6 +36,7 @@ def update_pos():
                 labels=["upper leg", "lower leg"],
             ),
         )
+
 
 def on_press(key):
     global x, y
@@ -54,15 +57,17 @@ def on_press(key):
     except AttributeError:
         print(f"Error: special key {key} pressed")
 
+
 def parse_args():
     parser = argparse.ArgumentParser(description="Control CLI")
     parser.add_argument(
-        "--rerun", 
-        default=False, 
+        "--rerun",
+        default=False,
         type=bool,
         help="Flag for enabling rerun, default False.",
     )
     return parser.parse_args()
+
 
 if __name__ == "__main__":
     main()
