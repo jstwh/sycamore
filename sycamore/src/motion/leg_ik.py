@@ -27,6 +27,9 @@ class Leg:
         theta1_rad = math.radians(theta1)
         theta2_rad = math.radians(theta2)
 
+        x0 = 0
+        y0 = 0
+
         x1 = self.l1 * math.cos(theta1_rad)
         y1 = self.l1 * math.sin(theta1_rad)
 
@@ -35,4 +38,6 @@ class Leg:
 
         print(f"Joint 1 (x1, y1): ({int(x1)}, {int(y1)})")
         print(f"Joint 2 (x2, y2): ({int(x2)}, {int(y2)})")
-        return (int(x2), int(y2))
+        
+        # return leg coordinates
+        return [[x0, y0, 0], [x1, y1, 0]], [[x1, y1, 0], [x2, y2, 0]]
