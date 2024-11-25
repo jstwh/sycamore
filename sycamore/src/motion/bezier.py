@@ -5,7 +5,8 @@ import rerun as rr
 import time
 
 def main():
-    rr.init("rerun_leg_cicle_example", spawn=True)
+    rr.init("IK visualization")
+    rr.connect_tcp("127.0.0.1:9876")
 
     radius = 20
     points = point_on_a_circle(radius, 100)

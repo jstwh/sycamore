@@ -16,7 +16,8 @@ def main():
         kit.servo[1].set_pulse_width_range(500, 2500)
 
     if args.rerun:
-        rr.init("rerun_leg_example", spawn=True)
+        rr.init("IK visualization")
+        rr.connect_tcp("127.0.0.1:9876")
 
     l1 = 100
     l2 = 100
