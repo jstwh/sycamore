@@ -23,6 +23,7 @@ packaging==24.2
 pillow==11.0.0
 pyarrow==18.0.0
 pyftdi==0.55.4
+pygame==2.6.1
 pynput==1.7.7
 pyparsing==3.2.0
 pyserial==3.5
