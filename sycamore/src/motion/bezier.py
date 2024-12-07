@@ -9,7 +9,7 @@ def main():
     rr.connect_tcp("127.0.0.1:9876")
 
     radius = 20
-    points = point_on_a_circle(radius, 100)
+    points = point_on_a_circle(radius, 20)
     l1 = 100
     l2 = 100
     leg = Leg(l1, l2)
@@ -26,6 +26,7 @@ def update_pos(points, leg):
                 [upper, lower],
                 colors=[[255, 0, 0], [0, 255, 0]],
                 labels=["upper leg", "lower leg"],
+                radii=1.5
             ),
         )
 
