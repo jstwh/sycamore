@@ -1,12 +1,14 @@
 from pynput import keyboard
+from sycamore.src.motion.ik import LegIK
 from leg_ik import Leg
 from adafruit_servokit import ServoKit
 import rerun as rr
 import argparse
+import math
 
 
 def main():
-    global x, y, leg, args, kit
+    global x, y, z, leg_2, leg_3, args, kit
     args = parse_args()
 
     # TODO This needs testing on the real leg!
@@ -19,24 +21,23 @@ def main():
         rr.init("IK visualization")
         rr.connect_tcp("127.0.0.1:9876")
 
-    l1 = 100
-    l2 = 100
-    x = 0
-    if args.irl:
-        y = 140
-    else:
-        y = -140
-
-    leg = Leg(l1, l2)
+    l1 = 0.4
+    l2 = 0.4
+    l3 = 0.05
+    x = -0.05
+    y = -0.55
+    z = 0
+    leg_2 = Leg(l1, l2)
+    leg_3 = LegIK(l1, l2, l3)
 
     with keyboard.Listener(on_press=on_press) as listener:
         listener.join()
 
 
 def update_pos():
-    global x, y
-    t1, t2 = leg.ja_from_xy(x, y)
-    upper, lower = leg.xy_from_ja(t1, t2)
+    global x, y, z
+    t1, t2, t3 = leg_3.ik((x, y, z), "right")
+    upper, lower = leg_2.xy_from_ja(math.degrees(t2), math.degrees(t3))
 
     if args.irl:
         kit.servo[0].angle = t1
@@ -85,7 +86,7 @@ def parse_args():
         "--irl",
         default=False,
         type=bool,
-        help="Flag that can be enabled if the code should work on the real world leg. Default set to False."
+        help="Flag that can be enabled if the code should work on the real world leg. Default set to False.",
     )
     return parser.parse_args()
 
