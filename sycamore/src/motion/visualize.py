@@ -7,7 +7,7 @@ import time
 
 def draw_robot(leg, body, T, LegPoints):
     """
-    Inspired by: 
+    Inspired by:
         - https://spotmicroai.readthedocs.io/en/latest/kinematic/#setup-our-3d-ouput
     """
     (Tlf, Trf, Tlb, Trb, Tm) = T
@@ -46,18 +46,47 @@ def draw_robot(leg, body, T, LegPoints):
         ),
     )
 
+
 def little_dance(leg, body):
-    LegPoints = np.array([
-        [100, -100, 100, 1],
-        [100, -100, -100, 1],
-        [-100, -100, 100, 1],
-        [-100, -100, -100, 1],
-    ])
+    LegPoints = np.array(
+        [
+            [100, -100, 100, 1],
+            [100, -100, -100, 1],
+            [-100, -100, 100, 1],
+            [-100, -100, -100, 1],
+        ]
+    )
 
     angles_pitch = []
     angles_yaw = []
     angles_roll = []
-    angles = [0, -5, -10, -15, -20, -25, -30, -25, -20, -15, -10, -5, 0, 5, 10, 15, 20, 25, 30, 25, 20, 15, 10, 5, 0]
+    angles = [
+        0,
+        -5,
+        -10,
+        -15,
+        -20,
+        -25,
+        -30,
+        -25,
+        -20,
+        -15,
+        -10,
+        -5,
+        0,
+        5,
+        10,
+        15,
+        20,
+        25,
+        30,
+        25,
+        20,
+        15,
+        10,
+        5,
+        0,
+    ]
 
     angles_pitch.extend(angles * 2)
     angles_yaw.extend(angles * 2)
@@ -65,29 +94,38 @@ def little_dance(leg, body):
 
     for angle in angles_pitch:
         time.sleep(0.1)
-        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(radians(angle), radians(0), radians(0), 0, 0, 0)
+        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(
+            radians(angle), radians(0), radians(0), 0, 0, 0
+        )
 
         draw_robot(leg, body, (Tlf, Trf, Tlb, Trb, Tm), LegPoints)
-    
+
     for angle in angles_yaw:
         time.sleep(0.1)
-        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(radians(0), radians(angle), radians(0), 0, 0, 0)
+        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(
+            radians(0), radians(angle), radians(0), 0, 0, 0
+        )
 
         draw_robot(leg, body, (Tlf, Trf, Tlb, Trb, Tm), LegPoints)
-    
+
     for angle in angles_roll:
         time.sleep(0.1)
-        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(radians(0), radians(0), radians(angle), 0, 0, 0)
+        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(
+            radians(0), radians(0), radians(angle), 0, 0, 0
+        )
 
         draw_robot(leg, body, (Tlf, Trf, Tlb, Trb, Tm), LegPoints)
 
+
 def twerk(leg, body):
-    LegPoints = np.array([
-        [100, -60, 100, 1],
-        [100, -60, -100, 1],
-        [-100, -100, 100, 1],
-        [-100, -100, -100, 1],
-    ])
+    LegPoints = np.array(
+        [
+            [100, -60, 100, 1],
+            [100, -60, -100, 1],
+            [-100, -100, 100, 1],
+            [-100, -100, -100, 1],
+        ]
+    )
     t = [-100, -90, -80, -70, -60, -50, -60, -70, -80, -90]
     t_array = []
     t_array.extend(t * 50)
@@ -99,25 +137,31 @@ def twerk(leg, body):
         LegPoints[3][1] = point
         time.sleep(0.1)
 
+
 def majestic_gallop(leg, body):
-    LegPoints = np.array([
-        [100, -100, 100, 1],
-        [100, -100, -100, 1],
-        [-100, -100, 100, 1],
-        [-100, -100, -100, 1],
-    ])
+    LegPoints = np.array(
+        [
+            [100, -100, 100, 1],
+            [100, -100, -100, 1],
+            [-100, -100, 100, 1],
+            [-100, -100, -100, 1],
+        ]
+    )
     (Tlf, Trf, Tlb, Trb, Tm) = body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
     radius = 20
     points = point_on_a_circle(radius, 100)
     for point in points:
         draw_robot(leg, body, (Tlf, Trf, Tlb, Trb, Tm), LegPoints)
-        LegPoints = np.array([
-            [point[0] + 100, point[1] + -100, 100, 1],
-            [point[0] + 100, point[1] + -100, -100, 1],
-            [point[0] + -100, point[1] + -100, 100, 1],
-            [point[0] + -100, point[1] + -100, -100, 1],
-        ])
+        LegPoints = np.array(
+            [
+                [point[0] + 100, point[1] + -100, 100, 1],
+                [point[0] + 100, point[1] + -100, -100, 1],
+                [point[0] + -100, point[1] + -100, 100, 1],
+                [point[0] + -100, point[1] + -100, -100, 1],
+            ]
+        )
         time.sleep(0.01)
+
 
 def point_on_a_circle(radius, nr_of_revolutions):
     points = []
@@ -127,15 +171,19 @@ def point_on_a_circle(radius, nr_of_revolutions):
         points.append([x, y])
     return points
 
+
 def reset_body(leg, body):
-    LegPoints = np.array([
-        [100, -100, 100, 1],
-        [100, -100, -100, 1],
-        [-100, -100, 100, 1],
-        [-100, -100, -100, 1],
-    ])
+    LegPoints = np.array(
+        [
+            [100, -100, 100, 1],
+            [100, -100, -100, 1],
+            [-100, -100, 100, 1],
+            [-100, -100, -100, 1],
+        ]
+    )
     (Tlf, Trf, Tlb, Trb, Tm) = body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
     draw_robot(leg, body, (Tlf, Trf, Tlb, Trb, Tm), LegPoints)
+
 
 def init_rerun():
     rr.init("IK visualization")
@@ -154,7 +202,5 @@ if __name__ == "__main__":
     body = BodyIK(length, width)
     reset_body(leg, body)
     little_dance(leg, body)
-    #majestic_gallop(leg, body)
-    #twerk(leg, body)
-
-
+    # majestic_gallop(leg, body)
+    # twerk(leg, body)
