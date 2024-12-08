@@ -2,20 +2,15 @@ import numpy as np
 import rerun as rr
 from ik import BodyIK, LegIK
 from math import radians
+import time
 
 
-def draw_robot():
-    l1 = 25
-    l2 = 20
-    l3 = 80
-    l4 = 80
-    length = 150
-    width = 90
-    leg = LegIK(l1, l2, l3, l4)
-    body = BodyIK(length, width)
-    (Tlf, Trf, Tlb, Trb, Tm) = body.ik(
-        radians(0), radians(0), radians(0), 0, 0, 0
-    )
+def draw_robot(l1, l2, l3, l4, length, width, leg, body, T):
+    """
+    Inspired by: 
+        - https://spotmicroai.readthedocs.io/en/latest/kinematic/#setup-our-3d-ouput
+    """
+    (Tlf, Trf, Tlb, Trb, Tm) = T
 
     # These points define the initial positions of the robot's body in its local reference frame.
     Lp = np.array(
@@ -27,7 +22,7 @@ def draw_robot():
         ]
     )
 
-    body = body.log_body(body.calc_segments(Tlf, Trf, Tlb, Trb, Tm))
+    robot_body = body.log_body(body.calc_segments(Tlf, Trf, Tlb, Trb, Tm))
 
     # Invert local X
     Ix = np.array([[-1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
@@ -52,7 +47,7 @@ def draw_robot():
         "robot",
         rr.LineStrips3D(
             [
-                body,
+                robot_body,
                 right_front,
                 right_back,
                 left_front,
@@ -69,4 +64,45 @@ def init_rerun():
 
 if __name__ == "__main__":
     init_rerun()
-    draw_robot()
+
+    l1 = 25
+    l2 = 20
+    l3 = 80
+    l4 = 80
+    length = 150
+    width = 90
+    leg = LegIK(l1, l2, l3, l4)
+    body = BodyIK(length, width)
+
+    angles_pitch = [0, -5, -10, -15, -20, -25, -30, -25, -20, -15, -10, -5]
+    angles_pitch.extend(angles_pitch * 2)
+
+    angles_yaw = [0, -5, -10, -15, -20, -25, -30, -25, -20, -15, -10, -5]
+    angles_yaw.extend(angles_yaw * 2)
+
+    angles_roll = [0, -5, -10, -15, -20, -25, -30, -25, -20, -15, -10, -5]
+    angles_roll.extend(angles_roll * 2)
+
+    for angle in angles_pitch:
+        time.sleep(0.1)
+        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(
+            radians(angle), radians(0), radians(0), 0, 0, 0
+        )
+
+        draw_robot(l1, l2, l3, l4, length, width, leg, body, (Tlf, Trf, Tlb, Trb, Tm))
+    
+    for angle in angles_yaw:
+        time.sleep(0.1)
+        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(
+            radians(0), radians(angle), radians(0), 0, 0, 0
+        )
+
+        draw_robot(l1, l2, l3, l4, length, width, leg, body, (Tlf, Trf, Tlb, Trb, Tm))
+    
+    for angle in angles_roll:
+        time.sleep(0.1)
+        (Tlf, Trf, Tlb, Trb, Tm) = body.ik(
+            radians(0), radians(0), radians(angle), 0, 0, 0
+        )
+
+        draw_robot(l1, l2, l3, l4, length, width, leg, body, (Tlf, Trf, Tlb, Trb, Tm))
