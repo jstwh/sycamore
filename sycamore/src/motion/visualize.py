@@ -1,7 +1,7 @@
 import numpy as np
 import rerun as rr
 from ik import BodyIK, LegIK
-from math import radians
+from math import radians, pi, sin, cos
 import time
 
 
@@ -99,6 +99,34 @@ def twerk(leg, body):
         LegPoints[3][1] = point
         time.sleep(0.1)
 
+def majestic_gallop(leg, body):
+    LegPoints = np.array([
+        [100, -100, 100, 1],
+        [100, -100, -100, 1],
+        [-100, -100, 100, 1],
+        [-100, -100, -100, 1],
+    ])
+    (Tlf, Trf, Tlb, Trb, Tm) = body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
+    radius = 20
+    points = point_on_a_circle(radius, 100)
+    for point in points:
+        draw_robot(leg, body, (Tlf, Trf, Tlb, Trb, Tm), LegPoints)
+        LegPoints = np.array([
+            [point[0] + 100, point[1] + -100, 100, 1],
+            [point[0] + 100, point[1] + -100, -100, 1],
+            [point[0] + -100, point[1] + -100, 100, 1],
+            [point[0] + -100, point[1] + -100, -100, 1],
+        ])
+        time.sleep(0.01)
+
+def point_on_a_circle(radius, nr_of_revolutions):
+    points = []
+    for theta in np.linspace(0, nr_of_revolutions * pi, 100 * nr_of_revolutions):
+        x = radius * sin(theta)
+        y = radius * cos(theta)
+        points.append([x, y])
+    return points
+
 def reset_body(leg, body):
     LegPoints = np.array([
         [100, -100, 100, 1],
@@ -126,6 +154,7 @@ if __name__ == "__main__":
     body = BodyIK(length, width)
     reset_body(leg, body)
     little_dance(leg, body)
+    #majestic_gallop(leg, body)
     #twerk(leg, body)
 
 
