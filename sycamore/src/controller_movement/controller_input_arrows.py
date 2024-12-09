@@ -16,8 +16,8 @@ else:
 
 # adding screen for visuals; initialising surface
     # syntax: pygame.display.set_mode((screen_width, screen_height))
-screen_width = 800
-screen_height = 500
+screen_width = 640
+screen_height = 480
 screen = pygame.display.set_mode((screen_width, screen_height))
 
 
@@ -34,7 +34,7 @@ step_size = 2 # setting the step size
 
 # creating clock to set FPS
 clock = pygame.time.Clock()
-FPS = 60
+FPS = 10
 
 
 # setting run to true; means pygame is running
