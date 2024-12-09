@@ -3,7 +3,6 @@ Inverse kinematics of Quad-EX.
 
 Inspired by:
     - https://www.researchgate.net/publication/322594373_Inverse_Kinematic_Analysis_of_a_Quadruped_Robot
-    - https://spotmicroai.readthedocs.io/en/latest/kinematic/#setup-our-3d-ouput
     - https://github.com/adham-elarabawy/open-quadruped/tree/master
     - https://github.com/engineerm-jp/Inverse_Kinematics_YouTube/tree/main
 """
