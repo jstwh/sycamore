@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from leg_ik import Leg
+from motion.leg_ik import Leg
 import rerun as rr
 import time
 

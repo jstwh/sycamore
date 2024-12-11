@@ -51,3 +51,28 @@ def BodyTransformationMatrix(roll, pitch, yaw, x, y, z):
     Tm = T + Rxyz
 
     return Tm
+
+
+def JointAnglesProvider(leg, Tlf, Trf, Tlb, Trb, LegPoints):
+    """
+    Returns the joint angles from all four legs in the order:
+        LF, LB, RF, RB
+    """
+    Ix = np.array([[-1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
+
+    Qlf = np.linalg.inv(Tlf) @ LegPoints[0]
+    plf = leg.ik(Qlf[0], Qlf[1], Qlf[2])
+
+    Qlb = np.linalg.inv(Tlb) @ LegPoints[2]
+    plb = leg.ik(Qlb[0], Qlb[1], Qlb[2])
+
+    Qrf = Ix @ np.linalg.inv(Trf) @ LegPoints[1]
+    prf = leg.ik(Qrf[0], Qrf[1], Qrf[2])
+
+    Qrb = Ix @ np.linalg.inv(Trb) @ LegPoints[3]
+    prb = leg.ik(Qrb[0], Qrb[1], Qrb[2])
+
+    return (plf, plb, prf, prb)
+
+
+

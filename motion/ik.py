@@ -4,12 +4,13 @@ Inverse kinematics of Quad-EX.
 Inspired by:
     - https://www.researchgate.net/publication/322594373_Inverse_Kinematic_Analysis_of_a_Quadruped_Robot
     - https://github.com/adham-elarabawy/open-quadruped/tree/master
+    - https://spotmicroai.readthedocs.io
     - https://github.com/engineerm-jp/Inverse_Kinematics_YouTube/tree/main
 """
 
 from math import cos, sin, atan2, sqrt, acos, pi
 import numpy as np
-from utils import BodyTransformationMatrix
+from motion.utils import BodyTransformationMatrix
 
 
 class LegIK:
@@ -45,8 +46,9 @@ class LegIK:
             theta2 = atan2(z, G) - atan2(l4 * sin(theta3), l3 + l4 * cos(theta3))
         except ValueError:
             return None, None, None
+        
+        return theta1, theta2, theta3
 
-        return (theta1, theta2, theta3)
 
     def calc_segments(self, angles):
         """
