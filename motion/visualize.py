@@ -196,5 +196,5 @@ if __name__ == "__main__":
     body = BodyIK(length, width)
     reset_body(leg, body, LegPoints)
     #little_dance(leg, body, LegPoints)
-    #majestic_gallop(leg, body, LegPoints)
-    #twerk(leg, body, LegPoints)
+    # majestic_gallop(leg, body, LegPoints)
+    # twerk(leg, body, LegPoints)

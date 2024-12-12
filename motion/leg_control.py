@@ -1,6 +1,6 @@
 from pynput import keyboard
-from motion.ik import LegIK
-from motion.leg_ik import Leg
+from ik import LegIK
+from leg_ik import Leg
 from adafruit_servokit import ServoKit
 import rerun as rr
 import argparse

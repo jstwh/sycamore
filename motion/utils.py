@@ -73,6 +73,3 @@ def JointAnglesProvider(leg, Tlf, Trf, Tlb, Trb, LegPoints):
     prb = leg.ik(Qrb[0], Qrb[1], Qrb[2])
 
     return (plf, plb, prf, prb)
-
-
-

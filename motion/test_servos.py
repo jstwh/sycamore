@@ -1,6 +1,7 @@
 from adafruit_servokit import ServoKit
-from motion.ik import LegIK
+from ik import LegIK
 from math import degrees
+
 
 def main():
     kit = ServoKit(channels=16)
@@ -26,7 +27,8 @@ def main():
     (theta1, theta2, theta3) = to_deg(leg.ik(210, -200, 110))
     if theta3 < 0 or theta3 > 180:
         raise ValueError
-    #test_on_the_leg(theta1, theta2, theta3, kit)
+    # test_on_the_leg(theta1, theta2, theta3, kit)
+
 
 def test_on_the_leg(theta1, theta2, theta3, kit):
     # Test with 0 degrees and rotation direction
@@ -42,16 +44,18 @@ def to_deg(theta1, theta2, theta3):
     """
     return (degrees(theta1), degrees(theta2), degrees(theta3))
 
+
 def servo_flip(angle):
     """
     Flips the direction that the servo moves in.
     """
     return 180 - angle
 
+
 def servo_mapping(angle):
     """
     Maps the output from the leg IK to an input usable by the 180degree servo's.
-    -90 to 90 -> 0 to 180 
+    -90 to 90 -> 0 to 180
     """
     return angle + 90
 

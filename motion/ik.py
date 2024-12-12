@@ -46,9 +46,8 @@ class LegIK:
             theta2 = atan2(z, G) - atan2(l4 * sin(theta3), l3 + l4 * cos(theta3))
         except ValueError:
             return None, None, None
-        
-        return theta1, theta2, theta3
 
+        return theta1, theta2, theta3
 
     def calc_segments(self, angles):
         """
