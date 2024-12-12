@@ -40,5 +40,5 @@ while(True):
         loopTime = time.time() - lastTime
         lastTime = time.time()
         t = time.time() - startTime
-        LegPoints = trot.loop(500, 0, 0, T, offset, InitialLegPoints)
+        LegPoints = trot.loop(200, 0, 0, T, offset, InitialLegPoints)
         draw_robot(leg, body, (Tlf, Trf, Tlb, Trb, Tm), LegPoints)
