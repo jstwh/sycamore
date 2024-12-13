@@ -8,6 +8,7 @@ from math import radians, degrees
 import rerun as rr
 from motion.utils import JointAnglesProvider
 
+
 def main():
     rr.init("IK visualization")
     rr.connect_tcp("145.109.45.135:9876")
@@ -36,8 +37,8 @@ def main():
     (Tlf, Trf, Tlb, Trb, Tm) = body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
     (Lf, _, _, _) = JointAnglesProvider(leg, Tlf, Trf, Tlb, Trb, InitialLegPoints)
     theta1, theta2, theta3 = Lf
-    #print(degrees(theta1, degrees(theta2), degrees(theta3))
-    #test_on_the_leg(degrees(theta1), degrees(theta2), degrees(theta3), kit)
+    # print(degrees(theta1, degrees(theta2), degrees(theta3))
+    # test_on_the_leg(degrees(theta1), degrees(theta2), degrees(theta3), kit)
 
 
 def test_on_the_leg(theta1, theta2, theta3, kit):
@@ -46,6 +47,7 @@ def test_on_the_leg(theta1, theta2, theta3, kit):
     kit.servo[1].angle = servo_mapping(theta2)
     # output should never be negative or larger than 180
     kit.servo[2].angle = servo_flip(theta3)
+
 
 def to_deg(theta1, theta2, theta3):
     """
@@ -67,6 +69,7 @@ def servo_mapping(angle):
     -90 to 90 -> 0 to 180
     """
     return angle + 90
+
 
 if __name__ == "__main__":
     main()
