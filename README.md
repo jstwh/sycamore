@@ -9,3 +9,8 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+### Setting up permissions
+Run the following script to set up the necessary permissions for accessing input devices:
+```bash
+./setup.sh
