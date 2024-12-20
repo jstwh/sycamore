@@ -36,7 +36,7 @@ class WalkingEngine:
             self.offset = np.array([0.0, 0.5, 0.5, 0.0])
 
 
-    def walk(self, t=0.8, v=400, angle=0, w_rot=0):
+    def walk(self, t=0.8, v=250, angle=0, w_rot=0):
         if self.gait is None:
             raise ValueError("Gait not initialized. Call init_walk first.")
 
