@@ -17,10 +17,12 @@ def send_ip_to_arduino(ip_addr, ser):
     ser.write(f"{ip_addr}\n".encode("utf-8"))
     time.sleep(1)  # Give Arduino time to display IP
 
+
 def display_ip(ser):
     ip = get_ip()
     time.sleep(1)  # TODO find better way to do this
     send_ip_to_arduino(ip, ser)
+
 
 if __name__ == "__main__":
     ip = get_ip()

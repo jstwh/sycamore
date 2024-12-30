@@ -5,8 +5,7 @@ from motion.walking_engine import WalkingEngine
 import argparse
 import serial
 from sensors.lcd import display_ip
-from sensors.distance import measured_distance
-import threading
+from sensors.distance import DistanceReader
 
 
 PORT = "/dev/ttyACM0"
@@ -36,17 +35,34 @@ def parse_args():
         "--no_motors",
         default=False,
         type=bool,
-        help="Flag that can be turned on if you only want visualization"
+        help="Flag that can be turned on if you only want visualization",
     )
     return parser.parse_args()
 
 
-def main():
+def main_control_loop(we, distance_reader):
+    interval = 0.030
+    startTime = time.time()
+    lastTime = startTime
+
+    while True:
+        if time.time() - lastTime >= interval:
+            loopTime = time.time() - lastTime
+            lastTime = time.time()
+            t = time.time() - startTime
+
+            left = distance_reader.left
+            right = distance_reader.right
+            print(left, right)
+
+            we.walk()
+
+
+if __name__ == "__main__":
     args = parse_args()
 
-    ser = serial.Serial(port="/dev/ttyACM0", baudrate=9600)
+    ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
     display_ip(ser)
-    ser.close()
 
     if args.rerun:
         init_rerun()
@@ -67,17 +83,13 @@ def main():
     we.reset_body()
     we.init_walk()
 
-    interval = 0.030
-    startTime = time.time()
-    lastTime = startTime
-    # main control loop
-    while True:
-        if time.time() - lastTime >= interval:
-            loopTime = time.time() - lastTime
-            lastTime = time.time()
-            t = time.time() - startTime
-            we.walk()
+    distance_reader = DistanceReader(ser)
+    distance_reader.start()
 
+    try:
+        main_control_loop(we, distance_reader)
+    except KeyboardInterrupt:
+        pass
 
-if __name__ == "__main__":
-    main()
+    distance_reader.stop()
+    distance_reader.join()

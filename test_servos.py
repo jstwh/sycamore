@@ -15,32 +15,32 @@ def main():
     kit = ServoKit(channels=16)
 
     # Left Front, in order: theta1, theta2, theta3
-    kit.servo[0].set_pulse_width_range(500, 2500) # Shoulder
-    kit.servo[1].set_pulse_width_range(500, 2500) # Upper
-    kit.servo[2].set_pulse_width_range(500, 2500) # Lower
+    kit.servo[0].set_pulse_width_range(500, 2500)  # Shoulder
+    kit.servo[1].set_pulse_width_range(500, 2500)  # Upper
+    kit.servo[2].set_pulse_width_range(500, 2500)  # Lower
     # Left Back, in order: theta1, theta2, theta3
-    kit.servo[3].set_pulse_width_range(500, 2500) # Shoulder
-    kit.servo[4].set_pulse_width_range(500, 2500) # Upper
-    kit.servo[5].set_pulse_width_range(500, 2500) # Lower 
+    kit.servo[3].set_pulse_width_range(500, 2500)  # Shoulder
+    kit.servo[4].set_pulse_width_range(500, 2500)  # Upper
+    kit.servo[5].set_pulse_width_range(500, 2500)  # Lower
     # Right Front, in order: theta1, theta2, theta3
-    kit.servo[6].set_pulse_width_range(500, 2500) # Shoulder 
-    kit.servo[7].set_pulse_width_range(500, 2500) # Upper
-    kit.servo[8].set_pulse_width_range(500, 2500) # Lower
+    kit.servo[6].set_pulse_width_range(500, 2500)  # Shoulder
+    kit.servo[7].set_pulse_width_range(500, 2500)  # Upper
+    kit.servo[8].set_pulse_width_range(500, 2500)  # Lower
     # Right Back, in order: theta1, theta2, theta3
-    kit.servo[9].set_pulse_width_range(500, 2500) # Shoulder
-    kit.servo[10].set_pulse_width_range(500, 2500) # Upper
-    kit.servo[11].set_pulse_width_range(500, 2500) # Lower
+    kit.servo[9].set_pulse_width_range(500, 2500)  # Shoulder
+    kit.servo[10].set_pulse_width_range(500, 2500)  # Upper
+    kit.servo[11].set_pulse_width_range(500, 2500)  # Lower
 
-    kit.servo[0].angle = 0 
+    kit.servo[0].angle = 0
     kit.servo[1].angle = 0
     kit.servo[2].angle = 0
-    kit.servo[3].angle = 0 
+    kit.servo[3].angle = 0
     kit.servo[4].angle = 0
     kit.servo[5].angle = 0
-    kit.servo[6].angle = 0 
+    kit.servo[6].angle = 0
     kit.servo[7].angle = 0
     kit.servo[8].angle = 0
-    kit.servo[9].angle = 0 
+    kit.servo[9].angle = 0
     kit.servo[10].angle = 0
     kit.servo[11].angle = 0
     time.sleep(2)
