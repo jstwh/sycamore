@@ -22,10 +22,3 @@ def display_ip(ser):
     ip = get_ip()
     time.sleep(1)  # TODO find better way to do this
     send_ip_to_arduino(ip, ser)
-
-
-if __name__ == "__main__":
-    ip = get_ip()
-    ser = serial.Serial(port="/dev/ttyACM0", baudrate=9600, timeout=1)
-    time.sleep(1)  # Allow Arduino to reset
-    send_ip_to_arduino(ip, ser)

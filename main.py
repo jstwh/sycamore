@@ -37,10 +37,16 @@ def parse_args():
         type=bool,
         help="Flag that can be turned on if you only want visualization",
     )
+    parser.add_argument(
+        "--arduino",
+        default=True,
+        type=bool,
+        help="Flag that can be disabled if not using an arduino."
+    )
     return parser.parse_args()
 
 
-def main_control_loop(we, distance_reader):
+def main_control_loop(we, distance_reader, args):
     interval = 0.030
     startTime = time.time()
     lastTime = startTime
@@ -50,10 +56,10 @@ def main_control_loop(we, distance_reader):
             loopTime = time.time() - lastTime
             lastTime = time.time()
             t = time.time() - startTime
-
-            left = distance_reader.left
-            right = distance_reader.right
-            print(left, right)
+            
+            if args.arduino:
+                left = distance_reader.left
+                right = distance_reader.right
 
             we.walk()
 
@@ -61,8 +67,9 @@ def main_control_loop(we, distance_reader):
 if __name__ == "__main__":
     args = parse_args()
 
-    ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
-    display_ip(ser)
+    if args.arduino:
+        ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
+        display_ip(ser)
 
     if args.rerun:
         init_rerun()
@@ -83,13 +90,16 @@ if __name__ == "__main__":
     we.reset_body()
     we.init_walk()
 
-    distance_reader = DistanceReader(ser)
-    distance_reader.start()
+    if args.arduino:
+        distance_reader = DistanceReader(ser)
+        distance_reader.start()
 
-    try:
-        main_control_loop(we, distance_reader)
-    except KeyboardInterrupt:
-        pass
+        try:
+            main_control_loop(we, distance_reader, args)
+        except KeyboardInterrupt:
+            pass
 
-    distance_reader.stop()
-    distance_reader.join()
+        distance_reader.stop()
+        distance_reader.join()
+    else:
+        main_control_loop()
