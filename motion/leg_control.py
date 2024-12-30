@@ -85,7 +85,7 @@ def parse_args():
         "--irl",
         default=False,
         type=bool,
-        help="Flag that can be enabled if the code should work on the real world leg. Default set to False."
+        help="Flag that can be enabled if the code should work on the real world leg. Default set to False.",
     )
     return parser.parse_args()
 
