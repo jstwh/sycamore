@@ -3,6 +3,14 @@ import numpy as np
 import rerun as rr
 from motion.walking_engine import WalkingEngine
 import argparse
+import serial
+from sensors.lcd import display_ip
+from sensors.distance import measured_distance
+import threading
+
+
+PORT = "/dev/ttyACM0"
+BAUDRATE = 9600
 
 
 def init_rerun():
@@ -35,6 +43,10 @@ def parse_args():
 
 def main():
     args = parse_args()
+
+    ser = serial.Serial(port="/dev/ttyACM0", baudrate=9600)
+    display_ip(ser)
+    ser.close()
 
     if args.rerun:
         init_rerun()

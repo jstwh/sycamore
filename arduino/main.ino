@@ -57,9 +57,7 @@ void loop() {
     float answer_left = distance(trigger_pin_left, echo_pin_left);
     float answer_right = distance(trigger_pin_right, echo_pin_right);
 
-    Serial.print(answer_left);
-    Serial.print(",");
-    Serial.println(answer_right);
+    Serial.println(String(answer_left) + "," + String(answer_right));
 
     delay(200);
   }

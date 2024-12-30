@@ -4,7 +4,7 @@ from math import radians
 from motion.utils import JointAnglesProvider
 import numpy as np
 from motion.step_planner import TrotGait
-from motion.visualize import draw_robot
+from visualize import draw_robot
 
 
 class WalkingEngine:

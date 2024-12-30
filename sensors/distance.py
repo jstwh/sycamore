@@ -7,9 +7,9 @@ def measured_distance(ser):
     dists = ser.readline().decode("utf-8").strip()
     if dists:
         left, right = map(float, dists.split(","))
-        return left, right
+        return (left, right)
     else:
-        return None, None
+        return (None, None)
 
 
 if __name__ == "__main__":
