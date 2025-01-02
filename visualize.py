@@ -151,7 +151,7 @@ def reset_body(leg, body, LegPoints):
 
 def init_rerun():
     rr.init("IK visualization")
-    rr.connect_tcp("127.0.0.1:9876")
+    rr.connect_tcp("145.109.45.58:9876")
 
 
 if __name__ == "__main__":

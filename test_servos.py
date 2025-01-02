@@ -3,7 +3,7 @@ import time
 import numpy as np
 from motion.ik import BodyIK, LegIK
 from motion.step_planner import TrotGait
-from motion.visualize import reset_body, draw_robot
+from visualize import reset_body, draw_robot
 from math import radians, degrees
 import rerun as rr
 from motion.utils import JointAnglesProvider
@@ -32,17 +32,17 @@ def main():
     kit.servo[11].set_pulse_width_range(500, 2500)  # Lower
 
     kit.servo[0].angle = 0
-    kit.servo[1].angle = 0
+    kit.servo[1].angle = 180
     kit.servo[2].angle = 0
     kit.servo[3].angle = 0
-    kit.servo[4].angle = 0
+    kit.servo[4].angle = 180
     kit.servo[5].angle = 0
     kit.servo[6].angle = 0
     kit.servo[7].angle = 0
-    kit.servo[8].angle = 0
+    kit.servo[8].angle = 180
     kit.servo[9].angle = 0
     kit.servo[10].angle = 0
-    kit.servo[11].angle = 0
+    kit.servo[11].angle = 180
     time.sleep(2)
 
     leg = LegIK(20, 0, 80, 80)
@@ -69,14 +69,14 @@ def test_on_the_leg(Lf, Lb, Rf, Rb, kit):
     Rb = to_deg(Rb)
     # LF
     kit.servo[0].angle = servo_mapping(Lf[0])
-    kit.servo[1].angle = servo_mapping(Lf[1])
+    kit.servo[1].angle = servo_flip(servo_mapping(Lf[1]))
     kit.servo[2].angle = servo_flip(Lf[2])
     # LB
-    kit.servo[3].angle = servo_mapping(servo_flip(Lb[0]))
-    kit.servo[4].angle = servo_mapping(Lb[1])
+    kit.servo[3].angle = servo_mapping(Lb[0])
+    kit.servo[4].angle = servo_flip(servo_mapping(Lb[1]))
     kit.servo[5].angle = servo_flip(Lb[2])
     # RF
-    kit.servo[6].angle = servo_mapping(servo_flip(Rf[0]))
+    kit.servo[6].angle = servo_mapping(Rf[0])
     kit.servo[7].angle = servo_mapping(Rf[1])
     kit.servo[8].angle = servo_flip(Rf[2])
     # RB
@@ -85,11 +85,11 @@ def test_on_the_leg(Lf, Lb, Rf, Rb, kit):
     kit.servo[11].angle = servo_flip(Rb[2])
 
 
-def to_deg(theta1, theta2, theta3):
+def to_deg(leg_angles):
     """
     Change the output from leg IK from radians to degrees.
     """
-    return (degrees(theta1), degrees(theta2), degrees(theta3))
+    return (degrees(leg_angles[0]), degrees(leg_angles[1]), degrees(leg_angles[2]))
 
 
 def servo_flip(angle):

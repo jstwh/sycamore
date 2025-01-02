@@ -7,7 +7,7 @@ const int echo_pin_left = 2;
 const int trigger_pin_right = 5;
 const int echo_pin_right = 4;
 
-float speed_of_sound = 343.2611; //Meters per second at 20C (!CHANGE WITH DIFF TEMPS!)
+float speed_of_sound = 343.2611; //Meters per second at 20C (ADJUST FOR DIFF TEMPS!)
 float conversion_factor = .0001;
 unsigned int ping_time = 0;
 

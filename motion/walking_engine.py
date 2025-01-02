@@ -14,6 +14,7 @@ class WalkingEngine:
         self.body = BodyIK(length, width)
         self.LegPoints = LegPoints
         self.CurrentLegPoints = LegPoints
+
         if args.no_motors == False:
             self.servo_factory = ServoFactory()
 
@@ -35,15 +36,28 @@ class WalkingEngine:
             self.T = self.body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
             self.offset = np.array([0.0, 0.5, 0.5, 0.0])
 
-    def walk(self, t=0.8, v=250, angle=0, w_rot=0):
+    def walk(self, direction="forward"):
+        self.direction = direction
+
         if self.gait is None:
             raise ValueError("Gait not initialized. Call init_walk first.")
 
         if isinstance(self.gait, TrotGait):
             (Tlf, Trf, Tlb, Trb, Tm) = self.T
-            self.CurrentLegPoints = self.gait.loop(
-                v, angle, w_rot, t, self.offset, self.LegPoints
-            )
+            if self.direction == "forward":
+                self.CurrentLegPoints = self.gait.loop(
+                    250, 0, 0, 0.8, self.offset, self.LegPoints
+                )
+            elif self.direction == "left":
+                self.CurrentLegPoints = self.gait.loop(
+                    100, -90, 50, 0.8, self.offset, self.LegPoints
+                )
+            elif self.direction == "right":
+                self.CurrentLegPoints = self.gait.loop(
+                    100, 90, 50, 0.8, self.offset, self.LegPoints
+                )
+            else:
+                raise ValueError("Invalid direction specified.")
             if self.args.no_motors == False:
                 (lf, lb, rf, rb) = JointAnglesProvider(
                     self.leg, Tlf, Trf, Tlb, Trb, self.CurrentLegPoints

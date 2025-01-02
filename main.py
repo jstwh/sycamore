@@ -14,7 +14,7 @@ BAUDRATE = 9600
 
 def init_rerun():
     rr.init("Quad-EX visualization")
-    rr.connect_tcp("127.0.0.1:9876")
+    rr.connect_tcp("145.109.45.58:9876")
 
 
 def parse_args():
@@ -61,7 +61,14 @@ def main_control_loop(we, distance_reader, args):
                 left = distance_reader.left
                 right = distance_reader.right
 
-            we.walk()
+            if left < 30 and right < 30:
+                we.walk(direction="left")
+            elif left < 30 and right > 30:
+                we.walk(direction="left")
+            elif left > 30 and right < 30:
+                we.walk(direction="right")
+            else:
+                we.walk(direction="forward")
 
 
 if __name__ == "__main__":
