@@ -41,7 +41,7 @@ def parse_args():
         "--arduino",
         default=True,
         type=bool,
-        help="Flag that can be disabled if not using an arduino."
+        help="Flag that can be disabled if not using an arduino.",
     )
     return parser.parse_args()
 
@@ -56,7 +56,7 @@ def main_control_loop(we, distance_reader, args):
             loopTime = time.time() - lastTime
             lastTime = time.time()
             t = time.time() - startTime
-            
+
             if args.arduino:
                 left = distance_reader.left
                 right = distance_reader.right
