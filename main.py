@@ -14,7 +14,7 @@ BAUDRATE = 9600
 
 def init_rerun():
     rr.init("Quad-EX visualization")
-    rr.connect_tcp("145.109.45.58:9876")
+    rr.connect_tcp("127.0.0.1:9876")
 
 
 def parse_args():
@@ -57,16 +57,19 @@ def main_control_loop(we, distance_reader, args):
             lastTime = time.time()
             t = time.time() - startTime
 
-            if args.arduino:
+            # Give the arduino time to send over serial
+            if args.arduino and distance_reader.left is not None:
                 left = distance_reader.left
                 right = distance_reader.right
 
-            if left < 30 and right < 30:
-                we.walk(direction="left")
-            elif left < 30 and right > 30:
-                we.walk(direction="left")
-            elif left > 30 and right < 30:
-                we.walk(direction="right")
+                if left < 30 and right < 30:
+                    we.walk(direction="left")
+                elif left < 30 and right > 30:
+                    we.walk(direction="left")
+                elif left > 30 and right < 30:
+                    we.walk(direction="right")
+                else:
+                    we.walk(direction="forward")
             else:
                 we.walk(direction="forward")
 
