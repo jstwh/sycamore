@@ -50,6 +50,7 @@ def main_control_loop(we, distance_reader, args):
     interval = 0.030
     startTime = time.time()
     lastTime = startTime
+    ip_displayed = False
 
     while True:
         if time.time() - lastTime >= interval:
@@ -59,6 +60,11 @@ def main_control_loop(we, distance_reader, args):
 
             # Give the arduino time to send over serial
             if args.arduino and distance_reader.left is not None:
+                # Only send the ip over serial if the arduino is ready
+                if ip_displayed == False:
+                    display_ip()
+                    ip_displayed = True
+
                 left = distance_reader.left
                 right = distance_reader.right
 
@@ -79,7 +85,6 @@ if __name__ == "__main__":
 
     if args.arduino:
         ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
-        display_ip(ser)
 
     if args.rerun:
         init_rerun()
