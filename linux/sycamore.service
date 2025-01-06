@@ -1,0 +1,15 @@
+[Unit]
+Description=Sycamore Main Script
+After=network.target
+
+[Service]
+User=pi
+Group=pi
+WorkingDirectory=/home/pi/sycamore
+ExecStart=/bin/bash -c 'source /home/pi/sycamore/.venv/bin/activate && exec python /home/pi/sycamore/main.py --no_motors True --rerun True'
+Restart=on-failure
+RestartSec=5
+Environment="PATH=/home/pi/sycamore/venv/bin:/usr/bin:/bin"
+
+[Install]
+WantedBy=multi-user.target
