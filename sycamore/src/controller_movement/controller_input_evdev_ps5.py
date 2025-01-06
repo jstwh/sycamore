@@ -5,14 +5,17 @@ import numpy as np # for creating L3 and R3 array (joysticks)
 
 # checking whether controller is connected and can be found
 try:
-
-    # devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
+    controller = InputDevice('/dev/input/event7')
+    # devices = [InputDevice(path) for path in list_devices()]
     # for device in devices:
-    #     print(device.path, device.name, device.phys)
-    controller = InputDevice(list_devices()[0]) # if there is only one
+    #     if 'Controller' in device.name:
+    #         controller = device
+
+    # controller = InputDevice(list_devices()[0]) # if there is only one
     print(f"Connected controller: {controller.name}, found at {controller.path}")
 except FileNotFoundError:
-    print(f"Controller not connected, or not found at {controller.path}")
+    # print(f"Controller not connected, or not found at {controller.path}")
+    print("Controller not connected, or not found")
     exit()
 
 
@@ -58,10 +61,22 @@ try:
                 if event.value == 0:
                     print("D-pad arrow released")
 
+        # triangle, O, X and square button programmed below, change where necessary :)
+        
         elif event.type == ecodes.EV_KEY:
-            if event.code == ecodes.BTN_EAST:
+            if event.code == ecodes.BTN_NORTH: # triangle-button pressed
+                pass
+            
+            # stop program when O-button is pressed
+            elif event.code == ecodes.BTN_EAST: # O-button pressed
                 print("Exiting...")
                 break
+            elif event.code == ecodes.BTN_SOUTH: # X-button pressed
+                pass
+            elif event.code == ecodes.BTN_WEST: # squaree-button pressed
+                pass
+
                 
 finally:
-    controller.close()
+    # controller.close()
+    print("Done!")
