@@ -18,17 +18,21 @@ except FileNotFoundError:
     print("Controller not connected, or not found")
     exit()
 
+# defining parameters
+x, y = 0, 0
+x_wjoy, y_wjoy = 0, 0
+position = [x, y]
+threshold = 0.1 # for joystick input
+step_size = 1
 
 # for-loop for reading events
-x, y = 0, 0
-position = [x, y]
-print("Waiting for a d-pad button to be pressed... Press Ctrl+C to exit.")
+print("Waiting for a d-pad button to be pressed... Press O-button to exit.")
 print(f"location: {position}")
 
 try:
     for event in controller.read_loop():
 
-        # EV_ABS for joysticks and d-pad
+        # EV_ABS for d-pad and joysticks
         if event.type == ecodes.EV_ABS:
 
             # ABS_HAT0X for horizontal movement: d-pad (left/right; x-axis)
@@ -60,13 +64,36 @@ try:
                     print(f"location coordinates: {position} \n")
                 if event.value == 0:
                     print("D-pad arrow released")
+                    
+            # NOT TESTED
+            # using left joystick to move
+            elif event.code == ecodes.ABS_X:
+                if event.value >= threshold:
+                    x_wjoy += event.value
+                    # use line below if using a step size is the preferred option
+                        # adjust step_size in parameter defining section
+                    # X_wjoy += step_size * event.value
+            elif event.code == ecodes.ABS_Y:
+                if event.value >= threshold:
+                    y_wjoy += event.value
+                    # use line below if using a step size is preferred
+                        # adjust step_size in parameter defining section
+                    # y_wjoy += step_size * event.value
+
+            # possibility to program right joystick
+            elif event.code == ecodes.ABS_RX:
+                if event.value >= threshold:
+                    pass
+            elif event.code == ecodes.ABS_RY:
+                if event.value >= threshold:
+                    pass
 
         # triangle, O, X and square button programmed below, change where necessary :)
         
         elif event.type == ecodes.EV_KEY:
             if event.code == ecodes.BTN_NORTH: # triangle-button pressed
                 pass
-            
+
             # stop program when O-button is pressed
             elif event.code == ecodes.BTN_EAST: # O-button pressed
                 print("Exiting...")
