@@ -64,21 +64,21 @@ try:
                     print(f"location coordinates: {position} \n")
                 if event.value == 0:
                     print("D-pad arrow released")
-                    
+
             # NOT TESTED
             # using left joystick to move
             elif event.code == ecodes.ABS_X:
                 if event.value >= threshold:
-                    x_wjoy += event.value
+                    x_wjoy += round(event.value, 2)
                     # use line below if using a step size is the preferred option
                         # adjust step_size in parameter defining section
-                    # X_wjoy += step_size * event.value
+                    # X_wjoy += step_size * round(event.value, 2)
             elif event.code == ecodes.ABS_Y:
                 if event.value >= threshold:
-                    y_wjoy += event.value
+                    y_wjoy += round(event.value, 2)
                     # use line below if using a step size is preferred
                         # adjust step_size in parameter defining section
-                    # y_wjoy += step_size * event.value
+                    # y_wjoy += step_size * round(event.value, 2)
 
             # possibility to program right joystick
             elif event.code == ecodes.ABS_RX:
