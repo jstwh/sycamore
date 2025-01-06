@@ -4,7 +4,7 @@ import rerun as rr
 from motion.walking_engine import WalkingEngine
 import argparse
 import serial
-from sensors.lcd import display_ip
+from sensors.lcd import display_ip, get_ip, send_ip_to_arduino
 from sensors.distance import DistanceReader
 
 
@@ -59,11 +59,12 @@ def main_control_loop(we, distance_reader, args):
             t = time.time() - startTime
 
             # Give the arduino time to send over serial
-            if args.arduino and distance_reader.left is not None:
+            if args.arduino and distance_reader.left and distance_reader.right:
                 # Only send the ip over serial if the arduino is ready
-                if ip_displayed == False:
-                    display_ip()
-                    ip_displayed = True
+                # if ip_displayed == False:
+                #     #display_ip(ser)
+                #     print("hello")
+                #     ip_displayed = True
 
                 left = distance_reader.left
                 right = distance_reader.right
@@ -85,6 +86,8 @@ if __name__ == "__main__":
 
     if args.arduino:
         ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
+        time.sleep(3)
+        display_ip(ser)
 
     if args.rerun:
         init_rerun()
@@ -106,15 +109,15 @@ if __name__ == "__main__":
     we.init_walk()
 
     if args.arduino:
+        # ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
         distance_reader = DistanceReader(ser)
         distance_reader.start()
 
         try:
             main_control_loop(we, distance_reader, args)
         except KeyboardInterrupt:
-            pass
-
-        distance_reader.stop()
-        distance_reader.join()
+            distance_reader.stop()
+            distance_reader.join()
+            ser.close()
     else:
         main_control_loop()
