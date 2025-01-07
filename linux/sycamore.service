@@ -10,6 +10,7 @@ ExecStart=/bin/bash -c 'source /home/pi/sycamore/.venv/bin/activate && exec pyth
 Restart=on-failure
 RestartSec=5
 Environment="PATH=/home/pi/sycamore/venv/bin:/usr/bin:/bin"
+KillSignal=SIGINT
 
 [Install]
 WantedBy=multi-user.target
