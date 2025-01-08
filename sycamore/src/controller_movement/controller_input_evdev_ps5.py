@@ -36,14 +36,15 @@ try:
         if event.type == ecodes.EV_ABS:
 
             # ABS_HAT0X for horizontal movement: d-pad (left/right; x-axis)
+                # could be coded better
             if event.code == ecodes.ABS_HAT0X:
                 if event.value == 1:
-                    x += 1
+                    x += step_size
                     position[0] = x
                     print("D-pad arrow pressed: right")
                     print(f"location coordinates: {position} \n")
                 elif event.value == -1:
-                    x -= 1
+                    x -= step_size
                     position[0] = x
                     print("D-pad arrow pressed: left")
                     print(f"location coordinates: {position} \n")
@@ -51,14 +52,15 @@ try:
                     print("D-pad arrow released")
         
             # ABS_HAT0Y for vertical movement: d-pad (up/down; y-axis)
+                # could be coded better
             elif event.code == ecodes.ABS_HAT0Y:
                 if event.value == 1:
-                    y -= 1
+                    y -= step_size
                     position[1] = y
                     print("D-pad arrow pressed: down")
                     print(f"location coordinates: {position} \n")
                 elif event.value == -1:
-                    y += 1
+                    y += step_size
                     position[1] = y
                     print("D-pad arrow pressed: up")
                     print(f"location coordinates: {position} \n")
@@ -67,27 +69,32 @@ try:
 
             # NOT TESTED
             # using left joystick to move
-            elif event.code == ecodes.ABS_X:
-                if event.value >= threshold:
-                    x_wjoy += round(event.value, 2)
+# Uncomment section start
+            # elif event.code == ecodes.ABS_X:
+            #     if event.value >= threshold:
+            #         x_wjoy += round(event.value, 2)
+# Uncomment section end
                     # use line below if using a step size is the preferred option
                         # adjust step_size in parameter defining section
                     # X_wjoy += step_size * round(event.value, 2)
-            elif event.code == ecodes.ABS_Y:
-                if event.value >= threshold:
-                    y_wjoy += round(event.value, 2)
+# Uncomment section start
+            # elif event.code == ecodes.ABS_Y:
+            #     if event.value >= threshold:
+            #         y_wjoy += round(event.value, 2)
+# Uncomment section end
                     # use line below if using a step size is preferred
                         # adjust step_size in parameter defining section
                     # y_wjoy += step_size * round(event.value, 2)
 
             # possibility to program right joystick
-            elif event.code == ecodes.ABS_RX:
-                if event.value >= threshold:
-                    pass
-            elif event.code == ecodes.ABS_RY:
-                if event.value >= threshold:
-                    pass
-
+# Uncomment section start --
+            # elif event.code == ecodes.ABS_RX:
+            #     if event.value >= threshold:
+            #         pass
+            # elif event.code == ecodes.ABS_RY:
+            #     if event.value >= threshold:
+            #         pass
+# -- Uncomment section end
         # triangle, O, X and square button programmed below, change where necessary :)
         
         elif event.type == ecodes.EV_KEY:
