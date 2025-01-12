@@ -14,7 +14,7 @@ BAUDRATE = 9600
 
 def init_rerun():
     rr.init("Quad-EX visualization")
-    rr.connect_tcp("127.0.0.1:9876")
+    rr.connect_tcp("145.109.15.55:9876")
 
 
 def parse_args():
