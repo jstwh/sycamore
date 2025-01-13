@@ -6,6 +6,7 @@ import argparse
 import serial
 from sensors.lcd import display_ip, get_ip, send_ip_to_arduino
 from sensors.distance import DistanceReader
+from motion.ps4 import Controller
 
 
 PORT = "/dev/ttyACM0"
@@ -14,7 +15,7 @@ BAUDRATE = 9600
 
 def init_rerun():
     rr.init("Quad-EX visualization")
-    rr.connect_tcp("145.109.15.55:9876")
+    rr.connect_tcp("145.109.52.77:9876")
 
 
 def parse_args():
@@ -57,21 +58,27 @@ def main_control_loop(we, distance_reader, args):
             lastTime = time.time()
             t = time.time() - startTime
 
-            # Give the arduino time to send over serial
-            if args.arduino and distance_reader.left and distance_reader.right:
-                left = distance_reader.left
-                right = distance_reader.right
+            if args.controller:
+                controller = Controller()
+                v, angle, w_rot = controller.read()
+                we.walk_with_controller(v, angle, w_rot)
 
-                if left < 30 and right < 30:
-                    we.walk(direction="left")
-                elif left < 30 and right > 30:
-                    we.walk(direction="left")
-                elif left > 30 and right < 30:
-                    we.walk(direction="right")
+            else:
+                # Give the arduino time to send over serial
+                if args.arduino and distance_reader.left:
+                    left = distance_reader.left
+                    right = distance_reader.right
+
+                    if left < 30 and right < 30:
+                        we.walk(direction="left")
+                    elif left < 30 and right > 30:
+                        we.walk(direction="left")
+                    elif left > 30 and right < 30:
+                        we.walk(direction="right")
+                    else:
+                        we.walk(direction="forward")
                 else:
                     we.walk(direction="forward")
-            else:
-                we.walk(direction="forward")
 
 
 if __name__ == "__main__":
@@ -84,16 +91,31 @@ if __name__ == "__main__":
     if args.rerun:
         init_rerun()
 
-    # TODO clearly document where the body dimensions come from
-    (l1, l2, l3, l4) = (20, 0, 80, 80)
-    (length, width) = (160, 110)
-    # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
+    # # TODO clearly document where the body dimensions come from
+    # (l1, l2, l3, l4) = (20, 0, 80, 80)
+    # (length, width) = (160, 110)
+    # # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
+    # LegPoints = np.array(
+    #     [
+    #         [100, -100, 75, 1],  # LF
+    #         [100, -100, -75, 1],  # RF
+    #         [-100, -100, 75, 1],  # LB
+    #         [-100, -100, -75, 1],  # RB
+    #     ]
+    # )
+
+    l1 = 56
+    l2 = 1
+    l3 = 151
+    l4 = 176
+    length = 420
+    width = 220
     LegPoints = np.array(
         [
-            [100, -100, 75, 1],  # LF
-            [100, -100, -75, 1],  # RF
-            [-100, -100, 75, 1],  # LB
-            [-100, -100, -75, 1],  # RB
+            [180, -220, 166, 1],
+            [180, -220, -166, 1],
+            [-180, -220, 166, 1],
+            [-180, -220, -166, 1],
         ]
     )
     we = WalkingEngine(l1, l2, l3, l4, length, width, LegPoints, args)

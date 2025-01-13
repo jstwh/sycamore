@@ -44,20 +44,44 @@ class WalkingEngine:
 
         if isinstance(self.gait, TrotGait):
             (Tlf, Trf, Tlb, Trb, Tm) = self.T
-            if self.direction == "forward":
-                self.CurrentLegPoints = self.gait.loop(
-                    250, 0, 0, 0.8, self.offset, self.LegPoints
+            # if self.direction == "forward":
+            #     self.CurrentLegPoints = self.gait.loop(
+            #         200, 0, 0, 4., self.offset, self.LegPoints
+            #     )
+            # elif self.direction == "left":
+            #     self.CurrentLegPoints = self.gait.loop(
+            #         100, -90, 50, 4., self.offset, self.LegPoints
+            #     )
+            # elif self.direction == "right":
+            #     self.CurrentLegPoints = self.gait.loop(
+            #         100, 90, 50, 4., self.offset, self.LegPoints
+            #     )
+            # else:
+            #     raise ValueError("Invalid direction specified.")
+            self.CurrentLegPoints = self.gait.loop(
+                    1000, 0, 0, 2., self.offset, self.LegPoints
                 )
-            elif self.direction == "left":
-                self.CurrentLegPoints = self.gait.loop(
-                    100, -90, 50, 0.8, self.offset, self.LegPoints
+
+            if self.args.no_motors == False:
+                (lf, lb, rf, rb) = JointAnglesProvider(
+                    self.leg, Tlf, Trf, Tlb, Trb, self.CurrentLegPoints
                 )
-            elif self.direction == "right":
-                self.CurrentLegPoints = self.gait.loop(
-                    100, 90, 50, 0.8, self.offset, self.LegPoints
+                self.servo_factory.move_servos(lf, lb, rf, rb)
+            if self.args.rerun:
+                draw_robot(
+                    self.leg, self.body, (Tlf, Trf, Tlb, Trb, Tm), self.CurrentLegPoints
                 )
-            else:
-                raise ValueError("Invalid direction specified.")
+
+    def walk_with_controller(self, v, angle, w_rot):
+        if self.gait is None:
+            raise ValueError("Gait not initialized. Call init_walk first.")
+
+        if isinstance(self.gait, TrotGait):
+            (Tlf, Trf, Tlb, Trb, Tm) = self.T
+            self.CurrentLegPoints = self.gait.loop(
+                v, angle, w_rot, 0.8, self.offset, self.LegPoints
+            )
+
             if self.args.no_motors == False:
                 (lf, lb, rf, rb) = JointAnglesProvider(
                     self.leg, Tlf, Trf, Tlb, Trb, self.CurrentLegPoints
