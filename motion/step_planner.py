@@ -70,7 +70,7 @@ class TrotGait:
         Z = np.abs(v) * np.array(
             [0.0, 0.0, 0.05, 0.05, 0.05, 0.06, 0.06, 0.06, 0.0, 0.0]
         )
-        Z = -Z
+        # Z = -Z
         Y = (
             np.abs(v)
             * s
@@ -91,7 +91,7 @@ class TrotGait:
     def step_trajectory(self, phi, v, angle, w_rot, LegPoints):
         if phi >= 1:
             phi = phi - 1.0  # Modify phi to be within [0,1) range
-        phi = 1 - phi
+        #phi = 1 - phi
         r = np.sqrt(LegPoints[0] ** 2 + LegPoints[1] ** 2)
         foot_angle = np.arctan2(
             LegPoints[1], LegPoints[0]

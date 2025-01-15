@@ -59,7 +59,7 @@ class WalkingEngine:
             # else:
             #     raise ValueError("Invalid direction specified.")
             self.CurrentLegPoints = self.gait.loop(
-                    1000, 0, 0, 2., self.offset, self.LegPoints
+                    1000, 0, 0, 0.8, self.offset, self.LegPoints
                 )
 
             if self.args.no_motors == False:
