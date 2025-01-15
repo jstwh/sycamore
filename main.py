@@ -112,12 +112,13 @@ if __name__ == "__main__":
     width = 220
     LegPoints = np.array(
         [
-            [180, -220, 166, 1],
-            [180, -220, -166, 1],
-            [-180, -220, 166, 1],
-            [-180, -220, -166, 1],
+            [180, -220, 166, 1], # LF Y, X, Z
+            [180, -220, -166, 1], # RF Y, X, Z
+            [-180, -220, 166, 1], # LB Y, X, Z
+            [-180, -220, -166, 1], # RB Y, X, Z
         ]
     )
+
     we = WalkingEngine(l1, l2, l3, l4, length, width, LegPoints, args)
     we.reset_body()
     we.init_walk()

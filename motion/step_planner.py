@@ -52,10 +52,10 @@ class TrotGait:
         p_stance = half_stance * (1 - 2 * phi_st)  # Position along the stance
 
         stance_x = c * p_stance * np.abs(v)
-        stance_y = -a * np.cos(np.pi / (2 * half_stance) * p_stance)
-        stance_z = -s * p_stance * np.abs(v)
+        stance_y = -s * p_stance * np.abs(v)
+        stance_z = -a * np.cos(np.pi / (2 * half_stance) * p_stance)
 
-        return stance_x, stance_z, stance_y
+        return stance_x, stance_y, stance_z
 
     def calculate_bezier_swing(self, phi_sw, v, angle):
         c = np.cos(np.deg2rad(angle))
@@ -67,14 +67,13 @@ class TrotGait:
             * c
             * np.array([-0.05, -0.06, -0.07, -0.07, 0.0, 0.0, 0.07, 0.07, 0.06, 0.05])
         )
-        Z = np.abs(v) * np.array(
-            [0.0, 0.0, 0.05, 0.05, 0.05, 0.06, 0.06, 0.06, 0.0, 0.0]
-        )
-        # Z = -Z
         Y = (
             np.abs(v)
             * s
             * np.array([0.05, 0.06, 0.07, 0.07, 0.0, -0.0, -0.07, -0.07, -0.06, -0.05])
+        )
+        Z = np.abs(v) * np.array(
+            [0.0, 0.0, 0.05, 0.05, 0.05, 0.06, 0.06, 0.06, 0.0, 0.0]
         )
 
         swing_x = 0.0
@@ -86,12 +85,11 @@ class TrotGait:
             swing_y += b(phi_sw, i, Y[i])
             swing_z += b(phi_sw, i, Z[i])
 
-        return swing_x, swing_z, swing_y
+        return swing_x, swing_y, swing_z
 
     def step_trajectory(self, phi, v, angle, w_rot, LegPoints):
         if phi >= 1:
             phi = phi - 1.0  # Modify phi to be within [0,1) range
-        #phi = 1 - phi
         r = np.sqrt(LegPoints[0] ** 2 + LegPoints[1] ** 2)
         foot_angle = np.arctan2(
             LegPoints[1], LegPoints[0]
@@ -132,8 +130,8 @@ class TrotGait:
                 self.alpha = -np.arctan2(np.sqrt(step_x_rot**2 + step_z_rot**2), r)
 
         coord = np.empty(3)
-        coord[1] = step_x_long + step_x_rot
-        coord[0] = step_y_long + step_y_rot
+        coord[0] = step_x_long + step_x_rot
+        coord[1] = step_y_long + step_y_rot
         coord[2] = step_z_long + step_z_rot
 
         return coord

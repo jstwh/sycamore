@@ -10,8 +10,8 @@ import time
 
 
 def main():
-    rr.init("IK visualization")
-    rr.connect_tcp("192.168.0.140:9876")
+    # rr.init("IK visualization")
+    # rr.connect_tcp("192.168.0.140:9876")
     kit = ServoKit(channels=16)
 
     # Left Front, in order: theta1, theta2, theta3
@@ -41,12 +41,12 @@ def main():
 
     # kit.servo[6].angle = 0
     # kit.servo[7].angle = 0
-    # kit.servo[8].angle = 180
+    # kit.servo[8].angle = 0
     
     # kit.servo[9].angle = 0
-    kit.servo[10].angle = 0
-    kit.servo[11].angle = 0
-    time.sleep(2)
+    # kit.servo[10].angle = 0
+    # kit.servo[11].angle = 0
+    time.sleep(1)
 
     # leg = LegIK(20, 0, 80, 80)
     # body = BodyIK(160, 110)
