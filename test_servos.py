@@ -69,7 +69,7 @@ def main():
     body = BodyIK(length, width)
     InitialLegPoints = np.array(
         [
-            [180, -220, 166, 1],
+            [180, -220, 166, 1], # Y, X, Z
             [180, -220, -166, 1],
             [-180, -220, 166, 1],
             [-180, -220, -166, 1],
