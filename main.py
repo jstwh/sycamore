@@ -15,7 +15,7 @@ BAUDRATE = 9600
 
 def init_rerun():
     rr.init("Quad-EX visualization")
-    rr.connect_tcp("145.109.52.77:9876")
+    rr.connect_tcp("127.0.0.1:9876")
 
 
 def parse_args():
@@ -40,7 +40,7 @@ def parse_args():
     )
     parser.add_argument(
         "--arduino",
-        default=True,
+        default=False,
         type=bool,
         help="Flag that can be disabled if not using an arduino.",
     )
@@ -135,4 +135,4 @@ if __name__ == "__main__":
             distance_reader.join()
             ser.close()
     else:
-        main_control_loop()
+        main_control_loop(we, None, args)

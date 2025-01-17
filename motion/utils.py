@@ -52,7 +52,7 @@ def BodyTransformationMatrix(roll, pitch, yaw, x, y, z):
 
     return Tm
 
-
+# NOTE Doesn't work on the actual robot
 def JointAnglesProvider(leg, Tlf, Trf, Tlb, Trb, LegPoints):
     """
     Returns the joint angles from all four legs in the order:
