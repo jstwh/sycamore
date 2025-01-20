@@ -15,7 +15,7 @@ BAUDRATE = 9600
 
 def init_rerun():
     rr.init("Quad-EX visualization")
-    rr.connect_tcp("127.0.0.1:9876")
+    rr.connect_tcp("145.109.5.39:9876")
 
 
 def parse_args():
@@ -63,22 +63,23 @@ def main_control_loop(we, distance_reader, args):
                 v, angle, w_rot = controller.read()
                 we.walk_with_controller(v, angle, w_rot)
 
-            else:
-                # Give the arduino time to send over serial
-                if args.arduino and distance_reader.left:
-                    left = distance_reader.left
-                    right = distance_reader.right
+            # else:
+            #     # Give the arduino time to send over serial
+            #     if args.arduino and distance_reader.left:
+            #         left = distance_reader.left
+            #         right = distance_reader.right
 
-                    if left < 30 and right < 30:
-                        we.walk(direction="left")
-                    elif left < 30 and right > 30:
-                        we.walk(direction="left")
-                    elif left > 30 and right < 30:
-                        we.walk(direction="right")
-                    else:
-                        we.walk(direction="forward")
-                else:
-                    we.walk(direction="forward")
+            #         if left < 30 and right < 30:
+            #             we.walk(direction="left")
+            #         elif left < 30 and right > 30:
+            #             we.walk(direction="left")
+            #         elif left > 30 and right < 30:
+            #             we.walk(direction="right")
+            #         else:
+            #             we.walk(direction="forward")
+            #     else:
+            #         we.walk(direction="forward")
+            we.twerk()
 
 
 if __name__ == "__main__":
@@ -91,37 +92,36 @@ if __name__ == "__main__":
     if args.rerun:
         init_rerun()
 
-    # # TODO clearly document where the body dimensions come from
-    # (l1, l2, l3, l4) = (20, 0, 80, 80)
-    # (length, width) = (160, 110)
-    # # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
-    # LegPoints = np.array(
-    #     [
-    #         [100, -100, 75, 1],  # LF
-    #         [100, -100, -75, 1],  # RF
-    #         [-100, -100, 75, 1],  # LB
-    #         [-100, -100, -75, 1],  # RB
-    #     ]
-    # )
-
     l1 = 56
     l2 = 1
     l3 = 151
     l4 = 176
     length = 420
     width = 220
+    """
+      -x
+        |
+        |
+        |    /  z
+        |   /
+        |  /
+        | /
+        |/____________  -y
+    """
+    # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
     LegPoints = np.array(
         [
-            [180, -220, 166, 1], # LF Y, X, Z
-            [180, -220, -166, 1], # RF Y, X, Z
-            [-180, -220, 166, 1], # LB Y, X, Z
-            [-180, -220, -166, 1], # RB Y, X, Z
+            [180, -220, 166, 1], # LF
+            [180, -220, -166, 1], # RF
+            [-180, -220, 166, 1], # LB
+            [-180, -220, -166, 1], # RB
         ]
     )
 
     we = WalkingEngine(l1, l2, l3, l4, length, width, LegPoints, args)
     we.reset_body()
     we.init_walk()
+    we.init_twerk()
 
     if args.arduino:
         # ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)

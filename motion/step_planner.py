@@ -130,9 +130,9 @@ class TrotGait:
                 self.alpha = -np.arctan2(np.sqrt(step_x_rot**2 + step_z_rot**2), r)
 
         coord = np.empty(3)
-        coord[0] = step_x_long + step_x_rot
-        coord[1] = step_y_long + step_y_rot
-        coord[2] = step_z_long + step_z_rot
+        coord[1] = -(step_x_long + step_x_rot)
+        coord[2] = step_y_long + step_y_rot
+        coord[0] = -(step_z_long + step_z_rot)
 
         return coord
 

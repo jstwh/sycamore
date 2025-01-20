@@ -59,7 +59,7 @@ class WalkingEngine:
             # else:
             #     raise ValueError("Invalid direction specified.")
             self.CurrentLegPoints = self.gait.loop(
-                    1000, 0, 0, 4., self.offset, self.LegPoints
+                    1000, 0, 0, 0.8, self.offset, self.LegPoints
                 )
 
             if self.args.no_motors == False:
@@ -91,3 +91,34 @@ class WalkingEngine:
                 draw_robot(
                     self.leg, self.body, (Tlf, Trf, Tlb, Trb, Tm), self.CurrentLegPoints
                 )
+
+    def init_twerk(self):
+        tw = [-180, -200, -220, -240, -260, -280, -300, -320, -300, -280, -260, -240, -220, -200, -180, -160, -140, -120, -140, -160]
+        self.twerk_array = []
+        self.twerk_array.extend(tw * 50)
+        self.twerk_idx = 0
+
+    def twerk(self):
+        """
+        -x
+            |
+            |
+            |    /  z
+            |   /
+            |  /
+            | /
+            |/____________  -y
+        """
+        self.CurrentLegPoints[0][0] = 30
+        self.CurrentLegPoints[1][0] = 30
+        self.CurrentLegPoints[2][0] = self.twerk_array[self.twerk_idx]
+        self.CurrentLegPoints[3][0] = self.twerk_array[self.twerk_idx]
+
+        self.twerk_idx += 1
+
+        (Tlf, Trf, Tlb, Trb, _) = self.T
+        if self.args.no_motors == False:
+            (lf, lb, rf, rb) = JointAnglesProvider(
+                self.leg, Tlf, Trf, Tlb, Trb, self.CurrentLegPoints
+            )
+            self.servo_factory.move_servos(lf, lb, rf, rb)

@@ -31,13 +31,13 @@ def main():
     kit.servo[10].set_pulse_width_range(500, 2500)  # Upper
     kit.servo[11].set_pulse_width_range(500, 2500)  # Lower
 
-    # kit.servo[0].angle = 0
-    # kit.servo[1].angle = 0
-    # kit.servo[2].angle = 0
+    # kit.servo[0].angle = 90
+    # kit.servo[1].angle = 180
+    # kit.servo[2].angle = 180
 
-    #kit.servo[3].angle = 0
-    # kit.servo[4].angle = 0
-    # kit.servo[5].angle = 0
+    # kit.servo[3].angle = 90
+    # kit.servo[4].angle = 180
+    # kit.servo[5].angle = 180
 
     # kit.servo[6].angle = 0
     # kit.servo[7].angle = 0
@@ -86,22 +86,22 @@ def test_on_the_leg(Lf, Lb, Rf, Rb, kit):
     Lb = to_deg(Lb)
     Rf = to_deg(Rf)
     Rb = to_deg(Rb)
-    # LF
-    kit.servo[0].angle = servo_mapping(Lf[0] + 5)
-    kit.servo[1].angle = servo_mapping(Lf[1])
-    kit.servo[2].angle = servo_flip(Lf[2])
+    # # LF
+    # kit.servo[0].angle = servo_mapping(Lf[0] + 5)
+    # kit.servo[1].angle = servo_flip(servo_mapping(Lf[1]))
+    # kit.servo[2].angle = Lf[2]
     # LB
-    kit.servo[3].angle = servo_flip(servo_mapping(Lb[0]) - 5)
-    kit.servo[4].angle = servo_mapping(Lb[1])
+    kit.servo[3].angle = servo_mapping(Lb[0]) - 5
+    kit.servo[4].angle = servo_flip(servo_mapping(Lb[1]))
     kit.servo[5].angle = servo_flip(Lb[2])
-    # RF
-    kit.servo[6].angle = servo_flip(servo_mapping(Rf[0]) - 8)
-    kit.servo[7].angle = servo_mapping(Rf[1])
-    kit.servo[8].angle = servo_flip(Rf[2] - 20)
-    # RB
-    kit.servo[9].angle = servo_mapping(Rb[0]) + 5
-    kit.servo[10].angle = servo_mapping(Rb[1])
-    kit.servo[11].angle = servo_flip(Rb[2])
+    # # RF
+    # kit.servo[6].angle = servo_flip(servo_mapping(Rf[0]) - 8)
+    # kit.servo[7].angle = servo_mapping(Rf[1])
+    # kit.servo[8].angle = servo_flip(Rf[2] - 20)
+    # # RB
+    # kit.servo[9].angle = servo_mapping(Rb[0]) + 5
+    # kit.servo[10].angle = servo_mapping(Rb[1])
+    # kit.servo[11].angle = servo_flip(Rb[2])
 
 
 def to_deg(leg_angles):
