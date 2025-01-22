@@ -33,14 +33,14 @@ def parse_args():
         help="Flag that can be enabled if you want to control the robot with a PS4 controller.",
     )
     parser.add_argument(
-        "--no_motors",
-        default=False,
+        "--motors",
+        default=True,
         type=bool,
-        help="Flag that can be turned on if you only want visualization",
+        help="Flag that can be turned off if you do not want to use the servo hat.",
     )
     parser.add_argument(
         "--arduino",
-        default=False,
+        default=True,
         type=bool,
         help="Flag that can be disabled if not using an arduino.",
     )

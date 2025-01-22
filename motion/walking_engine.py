@@ -15,14 +15,14 @@ class WalkingEngine:
         self.LegPoints = LegPoints
         self.CurrentLegPoints = LegPoints
 
-        if args.no_motors == False:
+        if args.motors == True:
             self.servo_factory = ServoFactory()
 
     def reset_body(self):
         (Tlf, Trf, Tlb, Trb, Tm) = self.body.ik(
             radians(0), radians(0), radians(0), 0, 0, 0
         )
-        if self.args.no_motors == False:
+        if self.args.motors == True:
             (lf, lb, rf, rb) = JointAnglesProvider(
                 self.leg, Tlf, Trf, Tlb, Trb, self.LegPoints
             )
@@ -62,7 +62,7 @@ class WalkingEngine:
                     1000, 0, 0, 0.8, self.offset, self.LegPoints
                 )
 
-            if self.args.no_motors == False:
+            if self.args.motors == True:
                 (lf, lb, rf, rb) = JointAnglesProvider(
                     self.leg, Tlf, Trf, Tlb, Trb, self.CurrentLegPoints
                 )
@@ -82,7 +82,7 @@ class WalkingEngine:
                 v, angle, w_rot, 0.8, self.offset, self.LegPoints
             )
 
-            if self.args.no_motors == False:
+            if self.args.motors == True:
                 (lf, lb, rf, rb) = JointAnglesProvider(
                     self.leg, Tlf, Trf, Tlb, Trb, self.CurrentLegPoints
                 )
@@ -117,7 +117,7 @@ class WalkingEngine:
         self.twerk_idx += 1
 
         (Tlf, Trf, Tlb, Trb, _) = self.T
-        if self.args.no_motors == False:
+        if self.args.motors == True:
             (lf, lb, rf, rb) = JointAnglesProvider(
                 self.leg, Tlf, Trf, Tlb, Trb, self.CurrentLegPoints
             )
