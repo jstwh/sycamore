@@ -60,7 +60,6 @@ class TrotGait:
     def calculate_bezier_swing(self, phi_sw, v, angle):
         c = np.cos(np.deg2rad(angle))
         s = np.sin(np.deg2rad(angle))
-
         # Control points for the Bezier curve
         X = (
             np.abs(v)

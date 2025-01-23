@@ -20,7 +20,7 @@ class WalkingEngine:
 
     def reset_body(self):
         (Tlf, Trf, Tlb, Trb, Tm) = self.body.ik(
-            radians(0), radians(0), radians(0), 0, 0, 0
+            radians(3), radians(0), radians(0), 0, 0, 0
         )
         if self.args.motors == True:
             (lf, lb, rf, rb) = JointAnglesProvider(
@@ -33,7 +33,7 @@ class WalkingEngine:
     def init_walk(self, gait="trot"):
         if gait == "trot":
             self.gait = TrotGait()
-            self.T = self.body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
+            self.T = self.body.ik(radians(3), radians(0), radians(0), 0, 0, 0)
             self.offset = np.array([0.0, 0.5, 0.5, 0.0])
 
     def walk(self, direction="forward"):
@@ -59,7 +59,7 @@ class WalkingEngine:
             # else:
             #     raise ValueError("Invalid direction specified.")
             self.CurrentLegPoints = self.gait.loop(
-                    1000, 0, 0, 0.8, self.offset, self.LegPoints
+                    950, 0, 0, 0.4, self.offset, self.LegPoints
                 )
 
             if self.args.motors == True:
