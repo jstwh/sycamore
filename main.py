@@ -4,7 +4,7 @@ import rerun as rr
 from motion.walking_engine import WalkingEngine
 import argparse
 import serial
-from sensors.lcd import display_ip, get_ip, send_ip_to_arduino
+from sensors.lcd import display_ip
 from sensors.distance import DistanceReader
 from motion.ps4 import Controller
 
@@ -20,30 +20,31 @@ def init_rerun():
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Quad-EX CLI")
+
     parser.add_argument(
         "--rerun",
-        default=False,
-        type=bool,
+        action="store_true",
         help="Flag for enabling rerun. Default set to False.",
     )
+
     parser.add_argument(
         "--controller",
-        default=False,
-        type=bool,
+        action="store_true",
         help="Flag that can be enabled if you want to control the robot with a PS4 controller.",
     )
+
     parser.add_argument(
         "--motors",
-        default=True,
-        type=bool,
-        help="Flag that can be turned off if you do not want to use the servo hat.",
+        action="store_false",
+        help="Flag that can be turned off if you do not want to use the servo hat. Default is True.",
     )
+
     parser.add_argument(
         "--arduino",
-        default=True,
-        type=bool,
-        help="Flag that can be disabled if not using an arduino.",
+        action="store_false",
+        help="Flag that can be disabled if not using an arduino. Default is True.",
     )
+
     return parser.parse_args()
 
 
@@ -80,7 +81,7 @@ def main_control_loop(we, distance_reader, args):
             #     else:
             #         we.walk(direction="forward")
             we.walk(direction="forward")
-            #we.twerk()
+            # we.twerk()
 
 
 if __name__ == "__main__":
@@ -110,12 +111,20 @@ if __name__ == "__main__":
         |/____________  -y
     """
     # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
+    # LegPoints = np.array(
+    #     [
+    #         [200, -220, 166, 1], # LF
+    #         [200, -220, -166, 1], # RF
+    #         [-160, -220, 166, 1], # LB
+    #         [-160, -220, -166, 1], # RB
+    #     ]
+    # )1
     LegPoints = np.array(
         [
-            [200, -220, 166, 1], # LF
-            [200, -220, -166, 1], # RF
-            [-160, -220, 166, 1], # LB
-            [-160, -220, -166, 1], # RB
+            [180, -220, 166, 1], # LF
+            [180, -220, -166, 1], # RF
+            [-180, -220, 166, 1], # LB
+            [-180, -220, -166, 1], # RB
         ]
     )
 

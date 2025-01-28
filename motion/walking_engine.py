@@ -46,21 +46,25 @@ class WalkingEngine:
             (Tlf, Trf, Tlb, Trb, Tm) = self.T
             # if self.direction == "forward":
             #     self.CurrentLegPoints = self.gait.loop(
-            #         200, 0, 0, 4., self.offset, self.LegPoints
+            #         950, 0, 0, 0.4, self.offset, self.LegPoints
             #     )
             # elif self.direction == "left":
             #     self.CurrentLegPoints = self.gait.loop(
-            #         100, -90, 50, 4., self.offset, self.LegPoints
+            #         0, -90, 950, 0.4, self.offset, self.LegPoints
             #     )
             # elif self.direction == "right":
             #     self.CurrentLegPoints = self.gait.loop(
-            #         100, 90, 50, 4., self.offset, self.LegPoints
+            #         0, 90, 950, 0.4, self.offset, self.LegPoints
             #     )
             # else:
             #     raise ValueError("Invalid direction specified.")
+
+            # self.CurrentLegPoints = self.gait.loop(
+            #         950, 0, 0, 0.4, self.offset, self.LegPoints
+            #     )
             self.CurrentLegPoints = self.gait.loop(
-                    950, 0, 0, 0.4, self.offset, self.LegPoints
-                )
+                0, 90, 950, 0.4, self.offset, self.LegPoints
+            )
 
             if self.args.motors == True:
                 (lf, lb, rf, rb) = JointAnglesProvider(
@@ -93,7 +97,7 @@ class WalkingEngine:
                 )
 
     def init_twerk(self):
-        tw = [-180, -200, -220, -240, -260, -280, -300, -320, -300, -280, -260, -240, -220, -200, -180, -160, -140, -120, -140, -160]
+        tw = [-180, -200, -220, -240, -260, -280, -300, -320, -300, -280, -260, -240, -220, -200, -180, -160]
         self.twerk_array = []
         self.twerk_array.extend(tw * 50)
         self.twerk_idx = 0
@@ -109,8 +113,8 @@ class WalkingEngine:
             | /
             |/____________  -y
         """
-        self.CurrentLegPoints[0][0] = 30
-        self.CurrentLegPoints[1][0] = 30
+        self.CurrentLegPoints[0][0] = 90
+        self.CurrentLegPoints[1][0] = 90
         self.CurrentLegPoints[2][0] = self.twerk_array[self.twerk_idx]
         self.CurrentLegPoints[3][0] = self.twerk_array[self.twerk_idx]
 
