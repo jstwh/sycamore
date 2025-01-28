@@ -97,7 +97,7 @@ if __name__ == "__main__":
     l1 = 56
     l2 = 0
     l3 = 150
-    l4 = 150
+    l4 = 175
     length = 400
     width = 200
     """
@@ -111,38 +111,38 @@ if __name__ == "__main__":
         |/____________  -y
     """
     # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
-    # LegPoints = np.array(
-    #     [
-    #         [200, -220, 166, 1], # LF
-    #         [200, -220, -166, 1], # RF
-    #         [-160, -220, 166, 1], # LB
-    #         [-160, -220, -166, 1], # RB
-    #     ]
-    # )1
     LegPoints = np.array(
         [
-            [180, -220, 166, 1], # LF
-            [180, -220, -166, 1], # RF
-            [-180, -220, 166, 1], # LB
-            [-180, -220, -166, 1], # RB
+            [200, -220, 166, 1], # LF
+            [200, -220, -166, 1], # RF
+            [-160, -220, 166, 1], # LB
+            [-160, -220, -166, 1], # RB
         ]
     )
+    # LegPoints = np.array(
+    #     [
+    #         [180, -220, 166, 1], # LF
+    #         [180, -220, -166, 1], # RF
+    #         [-180, -220, 166, 1], # LB
+    #         [-180, -220, -166, 1], # RB
+    #     ]
+    # )
 
     we = WalkingEngine(l1, l2, l3, l4, length, width, LegPoints, args)
     we.reset_body()
     we.init_walk()
-    # we.init_twerk()
+    #we.init_twerk()
 
-    if args.arduino:
-        ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
-        distance_reader = DistanceReader(ser)
-        distance_reader.start()
+    # if args.arduino:
+    #     ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
+    #     distance_reader = DistanceReader(ser)
+    #     distance_reader.start()
 
-        try:
-            main_control_loop(we, distance_reader, args)
-        except KeyboardInterrupt:
-            distance_reader.stop()
-            distance_reader.join()
-            ser.close()
-    else:
-        main_control_loop(we, None, args)
+    #     try:
+    #         main_control_loop(we, distance_reader, args)
+    #     except KeyboardInterrupt:
+    #         distance_reader.stop()
+    #         distance_reader.join()
+    #         ser.close()
+    # else:
+    #     main_control_loop(we, None, args)

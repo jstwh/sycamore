@@ -4,23 +4,24 @@ from math import degrees
 
 class ServoFactory:
     def __init__(self):
-        self.kit = ServoKit(channels=16)
+        self.kit0 = ServoKit(channels=16, address=0x42)
+        self.kit1 = ServoKit(channels=16, address=0x44)
         # Left Front, in order: theta1, theta2, theta3
-        self.kit.servo[0].set_pulse_width_range(500, 2500)
-        self.kit.servo[1].set_pulse_width_range(500, 2500)
-        self.kit.servo[2].set_pulse_width_range(500, 2500)
+        self.kit0.servo[0].set_pulse_width_range(500, 2500)
+        self.kit0.servo[1].set_pulse_width_range(500, 2500)
+        self.kit0.servo[2].set_pulse_width_range(500, 2500)
         # Left Back, in order: theta1, theta2, theta3
-        self.kit.servo[3].set_pulse_width_range(500, 2500)
-        self.kit.servo[4].set_pulse_width_range(500, 2500)
-        self.kit.servo[5].set_pulse_width_range(500, 2500)
+        self.kit0.servo[3].set_pulse_width_range(500, 2500)
+        self.kit0.servo[4].set_pulse_width_range(500, 2500)
+        self.kit0.servo[5].set_pulse_width_range(500, 2500)
         # Right Front, in order: theta1, theta2, theta3
-        self.kit.servo[6].set_pulse_width_range(500, 2500)
-        self.kit.servo[7].set_pulse_width_range(500, 2500)
-        self.kit.servo[8].set_pulse_width_range(500, 2500)
+        self.kit1.servo[6].set_pulse_width_range(500, 2500)
+        self.kit1.servo[7].set_pulse_width_range(500, 2500)
+        self.kit1.servo[8].set_pulse_width_range(500, 2500)
         # Right Back, in order: theta1, theta2, theta3
-        self.kit.servo[9].set_pulse_width_range(500, 2500)
-        self.kit.servo[10].set_pulse_width_range(500, 2500)
-        self.kit.servo[11].set_pulse_width_range(500, 2500)
+        self.kit1.servo[9].set_pulse_width_range(500, 2500)
+        self.kit1.servo[10].set_pulse_width_range(500, 2500)
+        self.kit1.servo[11].set_pulse_width_range(500, 2500)
 
     def move_servos(self, lf: tuple, lb: tuple, rf: tuple, rb: tuple):
         """
@@ -39,21 +40,21 @@ class ServoFactory:
         Rf = to_deg(rf)
         Rb = to_deg(rb)
         # LF
-        self.kit.servo[0].angle = servo_mapping(Lf[0]) + 5
-        self.kit.servo[1].angle = servo_flip(servo_mapping(Lf[1]) - 5)
-        self.kit.servo[2].angle = Lf[2] + 8
+        self.kit0.servo[0].angle = servo_mapping(Lf[0]) + 10
+        self.kit0.servo[1].angle = servo_flip(servo_mapping(Lf[1]) - 15)
+        self.kit0.servo[2].angle = Lf[2] + 13
         # LB
-        self.kit.servo[3].angle = servo_flip(servo_mapping(Lb[0]) - 4)
-        self.kit.servo[4].angle = servo_flip(servo_mapping(Lb[1]) - 8)
-        self.kit.servo[5].angle = Lb[2] + 3
+        self.kit0.servo[3].angle = servo_flip(servo_mapping(Lb[0]) - 12)
+        self.kit0.servo[4].angle = servo_flip(servo_mapping(Lb[1]) - 16) 
+        self.kit0.servo[5].angle = Lb[2] + 8
         # RF
-        self.kit.servo[6].angle = servo_flip(servo_mapping(Rf[0]) - 7)
-        self.kit.servo[7].angle = servo_mapping(Rf[1] - 5)
-        self.kit.servo[8].angle = servo_flip(Rf[2] - 10)
+        self.kit1.servo[6].angle = servo_flip(servo_mapping(Rf[0]) - 15)
+        self.kit1.servo[7].angle = servo_mapping(Rf[1] - 5)
+        self.kit1.servo[8].angle = servo_flip(Rf[2] - 10)
         # RB
-        self.kit.servo[9].angle = servo_mapping(Rb[0]) + 8
-        self.kit.servo[10].angle = servo_mapping(Rb[1]) + 5
-        self.kit.servo[11].angle = servo_flip(Rb[2])
+        self.kit1.servo[9].angle = servo_mapping(Rb[0]) + 4
+        self.kit1.servo[10].angle = servo_mapping(Rb[1]) + 10
+        self.kit1.servo[11].angle = servo_flip(Rb[2]) + 5
 
 def to_deg(leg_angles):
     """
