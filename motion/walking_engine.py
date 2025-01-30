@@ -44,24 +44,25 @@ class WalkingEngine:
 
         if isinstance(self.gait, TrotGait):
             (Tlf, Trf, Tlb, Trb, Tm) = self.T
-            # if self.direction == "forward":
-            #     self.CurrentLegPoints = self.gait.loop(
-            #         950, 0, 0, 0.4, self.offset, self.LegPoints
-            #     )
-            # elif self.direction == "left":
-            #     self.CurrentLegPoints = self.gait.loop(
-            #         0, -90, 950, 0.4, self.offset, self.LegPoints
-            #     )
-            # elif self.direction == "right":
-            #     self.CurrentLegPoints = self.gait.loop(
-            #         0, 90, 950, 0.4, self.offset, self.LegPoints
-            #     )
-            # else:
-            #     raise ValueError("Invalid direction specified.")
-
-            self.CurrentLegPoints = self.gait.loop(
+            if self.direction == "forward":
+                self.CurrentLegPoints = self.gait.loop(
                     1000, 0, 0, 0.8, self.offset, self.LegPoints
                 )
+            elif self.direction == "left":
+                self.CurrentLegPoints = self.gait.loop(
+                    0, -90, 1000, 0.8, self.offset, self.LegPoints
+                )
+            elif self.direction == "right":
+                self.CurrentLegPoints = self.gait.loop(
+                    0, 90, 1000, 0.8, self.offset, self.LegPoints
+                )
+                print("right")
+            else:
+                raise ValueError("Invalid direction specified.")
+
+            # self.CurrentLegPoints = self.gait.loop(
+            #         1000, 0, 0, 0.8, self.offset, self.LegPoints
+            #     )
             # self.CurrentLegPoints = self.gait.loop(
             #     0, -90, 1000, 0.8, self.offset, self.LegPoints
             # )

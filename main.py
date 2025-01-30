@@ -64,23 +64,23 @@ def main_control_loop(we, distance_reader, args):
                 v, angle, w_rot = controller.read()
                 we.walk_with_controller(v, angle, w_rot)
 
-            # else:
-            #     # Give the arduino time to send over serial
-            #     if args.arduino and distance_reader.left:
-            #         left = distance_reader.left
-            #         right = distance_reader.right
+            else:
+                # Give the arduino time to send over serial
+                if args.arduino and distance_reader.left:
+                    left = distance_reader.left
+                    right = distance_reader.right
 
-            #         if left < 30 and right < 30:
-            #             we.walk(direction="left")
-            #         elif left < 30 and right > 30:
-            #             we.walk(direction="left")
-            #         elif left > 30 and right < 30:
-            #             we.walk(direction="right")
-            #         else:
-            #             we.walk(direction="forward")
-            #     else:
-            #         we.walk(direction="forward")
-            we.walk(direction="forward")
+                    if left < 30 and right < 30:
+                        we.walk(direction="left")
+                    elif left < 30 and right > 30:
+                        we.walk(direction="left")
+                    elif left > 30 and right < 30:
+                        we.walk(direction="right")
+                    else:
+                        we.walk(direction="forward")
+                else:
+                    we.walk(direction="forward")
+            #we.walk(direction="forward")
             # we.twerk()
 
 
