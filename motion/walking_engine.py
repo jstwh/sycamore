@@ -20,7 +20,7 @@ class WalkingEngine:
 
     def reset_body(self):
         (Tlf, Trf, Tlb, Trb, Tm) = self.body.ik(
-            radians(0), radians(0), radians(0), 0, 0, 0
+            radians(10), radians(0), radians(0), 0, 0, 0
         )
         if self.args.motors == True:
             (lf, lb, rf, rb) = JointAnglesProvider(
@@ -33,7 +33,7 @@ class WalkingEngine:
     def init_walk(self, gait="trot"):
         if gait == "trot":
             self.gait = TrotGait()
-            self.T = self.body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
+            self.T = self.body.ik(radians(10), radians(0), radians(0), 0, 0, 0)
             self.offset = np.array([0.0, 0.5, 0.5, 0.0])
 
     def walk(self, direction="forward"):
@@ -63,7 +63,7 @@ class WalkingEngine:
                     1000, 0, 0, 0.8, self.offset, self.LegPoints
                 )
             # self.CurrentLegPoints = self.gait.loop(
-            #     0, 90, 950, 0.4, self.offset, self.LegPoints
+            #     0, -90, 1000, 0.8, self.offset, self.LegPoints
             # )
 
             if self.args.motors == True:
@@ -97,10 +97,10 @@ class WalkingEngine:
                 )
 
     def init_twerk(self):
-        tw = [-180, -200, -220, -240, -260, -280, -300, -320, -300, -280, -260, -240, -220, -200, -180, -160]
+        tw = [-60, -60, -60, -60, -60, -80, -80, -80, -80, -80, -100, -120, -140, -140, -120, -100, -80, -60]
         self.twerk_array = []
         self.twerk_array.extend(tw * 50)
-        self.T = self.body.ik(radians(3), radians(0), radians(0), 0, 0, 0)
+        self.T = self.body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
         self.twerk_idx = 0
 
     def twerk(self):
@@ -114,8 +114,8 @@ class WalkingEngine:
             | /
             |/____________  -y
         """
-        self.CurrentLegPoints[0][0] = 90
-        self.CurrentLegPoints[1][0] = 90
+        self.CurrentLegPoints[0][0] = 20
+        self.CurrentLegPoints[1][0] = 20
         self.CurrentLegPoints[2][0] = self.twerk_array[self.twerk_idx]
         self.CurrentLegPoints[3][0] = self.twerk_array[self.twerk_idx]
 

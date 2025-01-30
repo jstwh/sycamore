@@ -119,12 +119,20 @@ if __name__ == "__main__":
     #         [-180, -220, -166, 1], # RB
     #     ]
     # )
+    # LegPoints = np.array(
+    #     [
+    #         [180, -220, 140, 1], # LF
+    #         [180, -220, -140, 1], # RF
+    #         [-20, -190, 140, 1], # LB
+    #         [-20, -190, -140, 1], # RB
+    #     ]
+    # )
     LegPoints = np.array(
         [
-            [140, -240, 140, 1], # LF
-            [140, -240, -140, 1], # RF
-            [-60, -180, 140, 1], # LB
-            [-60, -180, -140, 1], # RB
+            [180, -220, 130, 1], # LF
+            [180, -220, -130, 1], # RF
+            [-20, -190, 130, 1], # LB
+            [-20, -190, -130, 1], # RB
         ]
     )
 
@@ -133,16 +141,16 @@ if __name__ == "__main__":
     we.init_walk()
     # we.init_twerk()
 
-    # if args.arduino:
-    #     ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
-    #     distance_reader = DistanceReader(ser)
-    #     distance_reader.start()
+    if args.arduino:
+        ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
+        distance_reader = DistanceReader(ser)
+        distance_reader.start()
 
-    #     try:
-    #         main_control_loop(we, distance_reader, args)
-    #     except KeyboardInterrupt:
-    #         distance_reader.stop()
-    #         distance_reader.join()
-    #         ser.close()
-    # else:
-    #     main_control_loop(we, None, args)
+        try:
+            main_control_loop(we, distance_reader, args)
+        except KeyboardInterrupt:
+            distance_reader.stop()
+            distance_reader.join()
+            ser.close()
+    else:
+        main_control_loop(we, None, args)
