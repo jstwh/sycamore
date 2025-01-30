@@ -98,8 +98,8 @@ if __name__ == "__main__":
     l2 = 0
     l3 = 150
     l4 = 175
-    length = 400
-    width = 200
+    length = 265
+    width = 110
     """
       -x
         |
@@ -111,14 +111,6 @@ if __name__ == "__main__":
         |/____________  -y
     """
     # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
-    LegPoints = np.array(
-        [
-            [200, -220, 166, 1], # LF
-            [200, -220, -166, 1], # RF
-            [-160, -220, 166, 1], # LB
-            [-160, -220, -166, 1], # RB
-        ]
-    )
     # LegPoints = np.array(
     #     [
     #         [180, -220, 166, 1], # LF
@@ -127,11 +119,19 @@ if __name__ == "__main__":
     #         [-180, -220, -166, 1], # RB
     #     ]
     # )
+    LegPoints = np.array(
+        [
+            [140, -240, 140, 1], # LF
+            [140, -240, -140, 1], # RF
+            [-60, -180, 140, 1], # LB
+            [-60, -180, -140, 1], # RB
+        ]
+    )
 
     we = WalkingEngine(l1, l2, l3, l4, length, width, LegPoints, args)
     we.reset_body()
     we.init_walk()
-    #we.init_twerk()
+    # we.init_twerk()
 
     # if args.arduino:
     #     ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)

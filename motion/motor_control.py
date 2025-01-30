@@ -40,7 +40,7 @@ class ServoFactory:
         Rf = to_deg(rf)
         Rb = to_deg(rb)
         # LF
-        self.kit0.servo[0].angle = servo_mapping(Lf[0]) + 10
+        self.kit0.servo[0].angle = servo_mapping(Lf[0]) + 15
         self.kit0.servo[1].angle = servo_flip(servo_mapping(Lf[1]) - 15)
         self.kit0.servo[2].angle = Lf[2] + 13
         # LB

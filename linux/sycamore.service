@@ -6,7 +6,7 @@ After=network.target
 User=pi
 Group=pi
 WorkingDirectory=/home/pi/sycamore
-ExecStart=/bin/bash -c 'source /home/pi/sycamore/.venv/bin/activate && exec python /home/pi/sycamore/main.py --no_motors True'
+ExecStart=/bin/bash -c 'source /home/pi/sycamore/.venv/bin/activate && exec python /home/pi/sycamore/main.py --motors'
 Restart=on-failure
 RestartSec=5
 Environment="PATH=/home/pi/sycamore/venv/bin:/usr/bin:/bin"
