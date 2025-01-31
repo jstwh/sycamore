@@ -80,8 +80,6 @@ def main_control_loop(we, distance_reader, args):
                         we.walk(direction="forward")
                 else:
                     we.walk(direction="forward")
-            #we.walk(direction="forward")
-            # we.twerk()
 
 
 if __name__ == "__main__":
@@ -110,23 +108,6 @@ if __name__ == "__main__":
         | /
         |/____________  -y
     """
-    # The LegPoints matrix is the position of the foot relative to the body center (0, 0, 0)
-    # LegPoints = np.array(
-    #     [
-    #         [180, -220, 166, 1], # LF
-    #         [180, -220, -166, 1], # RF
-    #         [-180, -220, 166, 1], # LB
-    #         [-180, -220, -166, 1], # RB
-    #     ]
-    # )
-    # LegPoints = np.array(
-    #     [
-    #         [180, -220, 140, 1], # LF
-    #         [180, -220, -140, 1], # RF
-    #         [-20, -190, 140, 1], # LB
-    #         [-20, -190, -140, 1], # RB
-    #     ]
-    # )
     LegPoints = np.array(
         [
             [180, -220, 130, 1], # LF
@@ -139,7 +120,6 @@ if __name__ == "__main__":
     we = WalkingEngine(l1, l2, l3, l4, length, width, LegPoints, args)
     we.reset_body()
     we.init_walk()
-    # we.init_twerk()
 
     if args.arduino:
         ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
