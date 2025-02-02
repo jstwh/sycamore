@@ -10,8 +10,8 @@ import time
 
 
 def main():
-    # rr.init("IK visualization")
-    # rr.connect_tcp("192.168.0.140:9876")
+    rr.init("IK visualization")
+    rr.connect_tcp("192.168.0.140:9876")
     kit = ServoKit(channels=16)
 
     # Left Front, in order: theta1, theta2, theta3
@@ -31,48 +31,37 @@ def main():
     kit.servo[10].set_pulse_width_range(500, 2500)  # Upper
     kit.servo[11].set_pulse_width_range(500, 2500)  # Lower
 
-    #kit.servo[0].angle = 0
-    # kit.servo[1].angle = 180
-    # kit.servo[2].angle = 180
+    kit.servo[0].angle = 0
+    kit.servo[1].angle = 180
+    kit.servo[2].angle = 180
 
     kit.servo[3].angle = 0
-    # kit.servo[4].angle = 180
-    # kit.servo[5].angle = 180
+    kit.servo[4].angle = 180
+    kit.servo[5].angle = 180
 
-    # kit.servo[6].angle = 0
-    # kit.servo[7].angle = 0
-    # kit.servo[8].angle = 0
+    kit.servo[6].angle = 0
+    kit.servo[7].angle = 0
+    kit.servo[8].angle = 0
 
-    # kit.servo[9].angle = 0
-    # kit.servo[10].angle = 0
-    # kit.servo[11].angle = 0
+    kit.servo[9].angle = 0
+    kit.servo[10].angle = 0
+    kit.servo[11].angle = 0
     time.sleep(1)
 
-    # leg = LegIK(20, 0, 80, 80)
-    # body = BodyIK(160, 110)
-
-    # InitialLegPoints = np.array(
-    #     [
-    #         [100, -100, 75, 1],
-    #         [100, -100, -75, 1],
-    #         [-100, -100, 75, 1],
-    #         [-100, -100, -75, 1],
-    #     ]
-    # )
     l1 = 56
-    l2 = 1
-    l3 = 151
-    l4 = 176
-    length = 420
-    width = 220
+    l2 = 0
+    l3 = 150
+    l4 = 175
+    length = 265
+    width = 110
     leg = LegIK(l1, l2, l3, l4)
     body = BodyIK(length, width)
     InitialLegPoints = np.array(
         [
-            [180, -220, 166, 1], # Y, X, Z
-            [180, -220, -166, 1],
-            [-180, -220, 166, 1],
-            [-180, -220, -166, 1],
+            [180, -220, 130, 1],  # LF
+            [180, -220, -130, 1],  # RF
+            [-20, -190, 130, 1],  # LB
+            [-20, -190, -130, 1],  # RB
         ]
     )
     reset_body(leg, body, InitialLegPoints)
@@ -86,22 +75,22 @@ def test_on_the_leg(Lf, Lb, Rf, Rb, kit):
     Lb = to_deg(Lb)
     Rf = to_deg(Rf)
     Rb = to_deg(Rb)
-    # # LF
-    # kit.servo[0].angle = servo_mapping(Lf[0] + 5)
-    # kit.servo[1].angle = servo_flip(servo_mapping(Lf[1]))
-    # kit.servo[2].angle = Lf[2]
-    # # LB
+    # LF
+    kit.servo[0].angle = servo_mapping(Lf[0] + 5)
+    kit.servo[1].angle = servo_flip(servo_mapping(Lf[1]))
+    kit.servo[2].angle = Lf[2]
+    # LB
     kit.servo[3].angle = servo_flip(servo_mapping(Lb[0]) + 3)
-    # kit.servo[4].angle = servo_flip(servo_mapping(Lb[1]))
-    # kit.servo[5].angle = servo_flip(Lb[2])
-    # # RF
-    # kit.servo[6].angle = servo_flip(servo_mapping(Rf[0]) - 10)
-    # kit.servo[7].angle = servo_mapping(Rf[1])
-    # kit.servo[8].angle = servo_flip(Rf[2] - 20)
-    # # RB
-    # kit.servo[9].angle = servo_mapping(Rb[0])
-    # kit.servo[10].angle = servo_mapping(Rb[1])
-    # kit.servo[11].angle = servo_flip(Rb[2])
+    kit.servo[4].angle = servo_flip(servo_mapping(Lb[1]))
+    kit.servo[5].angle = servo_flip(Lb[2])
+    # RF
+    kit.servo[6].angle = servo_flip(servo_mapping(Rf[0]) - 10)
+    kit.servo[7].angle = servo_mapping(Rf[1])
+    kit.servo[8].angle = servo_flip(Rf[2] - 20)
+    # RB
+    kit.servo[9].angle = servo_mapping(Rb[0])
+    kit.servo[10].angle = servo_mapping(Rb[1])
+    kit.servo[11].angle = servo_flip(Rb[2])
 
 
 def to_deg(leg_angles):

@@ -52,6 +52,7 @@ def BodyTransformationMatrix(roll, pitch, yaw, x, y, z):
 
     return Tm
 
+
 # NOTE Doesn't work on the actual robot
 def JointAnglesProvider(leg, Tlf, Trf, Tlb, Trb, LegPoints):
     """

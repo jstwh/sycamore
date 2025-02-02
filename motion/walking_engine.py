@@ -56,16 +56,8 @@ class WalkingEngine:
                 self.CurrentLegPoints = self.gait.loop(
                     0, 90, 1000, 0.8, self.offset, self.LegPoints
                 )
-                print("right")
             else:
                 raise ValueError("Invalid direction specified.")
-
-            # self.CurrentLegPoints = self.gait.loop(
-            #         1000, 0, 0, 0.8, self.offset, self.LegPoints
-            #     )
-            # self.CurrentLegPoints = self.gait.loop(
-            #     0, -90, 1000, 0.8, self.offset, self.LegPoints
-            # )
 
             if self.args.motors == True:
                 (lf, lb, rf, rb) = JointAnglesProvider(
@@ -98,7 +90,26 @@ class WalkingEngine:
                 )
 
     def init_twerk(self):
-        tw = [-60, -60, -60, -60, -60, -80, -80, -80, -80, -80, -100, -120, -140, -140, -120, -100, -80, -60]
+        tw = [
+            -60,
+            -60,
+            -60,
+            -60,
+            -60,
+            -80,
+            -80,
+            -80,
+            -80,
+            -80,
+            -100,
+            -120,
+            -140,
+            -140,
+            -120,
+            -100,
+            -80,
+            -60,
+        ]
         self.twerk_array = []
         self.twerk_array.extend(tw * 50)
         self.T = self.body.ik(radians(0), radians(0), radians(0), 0, 0, 0)
