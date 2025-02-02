@@ -1,4 +1,4 @@
-# sycamore
+# Sycamore
 
 A python framework for Quad-EX.
 
