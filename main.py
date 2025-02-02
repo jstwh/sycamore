@@ -15,7 +15,7 @@ BAUDRATE = 9600
 
 def init_rerun():
     rr.init("Quad-EX visualization")
-    rr.connect_tcp("145.109.5.39:9876")
+    rr.connect_tcp("127.0.0.1:9876")
 
 
 def parse_args():
@@ -84,6 +84,7 @@ def main_control_loop(we, distance_reader, args):
 
 if __name__ == "__main__":
     args = parse_args()
+    print(args.arduino)
 
     if args.arduino:
         ser = serial.Serial(PORT, BAUDRATE, timeout=0.5)
