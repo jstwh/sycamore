@@ -55,9 +55,11 @@ journalctl -u sycamore.service -f
 
 ### Arduino
 
-The files for arduino can be found under the arduino map. The file "main.ino" is currently on the arduino and handles showing the ip and streaming data from the ultrasonic distance sensors from the arduino to the raspberry pi. 
+The files for arduino can be found under the arduino map. The file "main.ino" is currently on the arduino and handles showing the ip and streaming data from the ultrasonic distance sensors from the arduino to the raspberry pi.
 
 There is also an "imu.ino" file which was used to test the imu but is not integrated yet. It is up to future collaborators to properly integrate the imu. Note that the imu is currently also not properly placed within Quad-EX, this should also be done for it to work as intended.
+
+For further information about the IMU, see [https://learn.adafruit.com/adafruit-bno055-absolute-orientation-sensor/arduino-code]().
 
 ### Argparse
 
@@ -107,11 +109,11 @@ The inverse kinematics, providing the joint angles for the servo's, are calculat
 
 ### Manual Servo Calibration
 
-The servo's are manually calibrated. This is based on how the legs should move. This entire process is done manually and we never made a consice calibration method. This, again, is something a new contributor might work on. The test_servos.py file is available for some testing when you're calibrating. 
+The servo's are manually calibrated. This is based on how the legs should move. This entire process is done manually and we never made a consice calibration method. This, again, is something a new contributor might work on. The test_servos.py file is available for some testing when you're calibrating.
 
 ### Visualizations
 
-In order to visualize the robot we use rerun. It is a state of the art robotics visualization program and we highly recommend looking it up and reading through the documentation before use. When you want to visualize something you should add the ipv4 from your laptop into rr.connect_tcp("[your laptop ip]:9876"). Note that you should have a rerun window open when you run this, it won't open a window by itself.
+In order to visualize the robot we use rerun. It is a state of the art robotics visualization program and we highly recommend looking it up and reading through the documentation before use. When you want to visualize something you should add the ipv4 from your laptop into rr.connect_tcp("[your laptop ip]:9876"). Note that you should have a rerun window open when you run this, it won't open a window by itself. There is a visualization.py file, most of it is outdated but we kept it in since it might give new contributors some idea of how to visualize something.
 
 ### Controller
 
@@ -120,6 +122,10 @@ The controller is something we worked on but it is not properly integrated into 
 ### Sensors
 
 The sensors that we properly wrote code for are the distance sensors and the lcd. There are also two camera's. We have conducted tests with camera's in an isolated environment but they are not integrated into the framework yet. It might be worthwhile for a new contributor to work on this.
+
+### Mechanical
+
+See [here](build_instructions/README.md).
 
 ### Electronics
 
